@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <h1>Welcome to the Auction Platform</h1>
+    <p>Use the navigation to explore the site.</p>
+    <a href="{% url 'auction_list' %}">View Auctions</a>
+</body>
+</html>
