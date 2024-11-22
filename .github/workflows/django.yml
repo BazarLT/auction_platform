@@ -53,7 +53,7 @@ jobs:
     - name: Set up Database
       run: |
         python manage.py makemigrations
-        python.manage.py migrate
+        python manage.py migrate
 
     - name: Run Tests
       env:
