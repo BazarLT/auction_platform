@@ -60,3 +60,9 @@ jobs:
         DATABASE_URL: postgres://user:password@127.0.0.1:5432/test_db
       run: |
         python manage.py test
+
+    - name: Set up Deno
+      uses: denoland/setup-deno@v2
+      with:
+        deno-version: v1.x
+        node-version: '20'
