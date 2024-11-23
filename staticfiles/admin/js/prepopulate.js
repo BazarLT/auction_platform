@@ -21,7 +21,7 @@
                 }
 
                 const values = [];
-                $.each(dependencies, function(i, field) {
+                $.each(dependencies, function(_i, field) {
                     field = $(field);
                     if (field.val().length > 0) {
                         values.push(field.val());
@@ -41,3 +41,4 @@
         });
     };
 }
+
