@@ -2,9 +2,9 @@ name: Django CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
@@ -37,6 +37,11 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
+    - name: Set up Node.js 20
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
     - name: Cache pip
       uses: actions/cache@v4
       with:
@@ -60,9 +65,3 @@ jobs:
         DATABASE_URL: postgres://user:password@127.0.0.1:5432/test_db
       run: |
         python manage.py test
-
-    - name: Set up Deno
-      uses: denoland/setup-deno@v2
-      with:
-        deno-version: v1.x
-        node-version: '20'
