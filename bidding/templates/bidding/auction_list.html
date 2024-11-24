@@ -15,7 +15,7 @@
             <p>Price: ${{ auction.price }}</p>
             <p>{{ auction.description }}</p>
             <p>End Date: {{ auction.end_date }}</p>
-            <p>Seller: {{ auction.seller }}</p>
+            <p>Seller: {{ auction.seller.username }}</p>
             <button onclick="location.href='{% url 'bid' auction.id %}'">Bid Now</button>
             <button onclick="location.href='{% url 'auction_details' auction.id %}'">View Details</button>
             <button onclick="alert('Share functionality coming soon!')">Share</button>
