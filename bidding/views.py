@@ -1,7 +1,29 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import UserProfile, Auction, Job, Bid
-from .forms import BidForm, UserProfileForm, JobForm
-from datetime import datetime
+from .forms import BidForm, UserProfileForm, JobForm, UserRegistrationForm
+
+# Home View
+def home(request):
+    return render(request, 'bidding/home.html')
+
+# Register View
+def register_view(request):
+    return render(request, 'bidding/register.html')
+
+# Order Post View
+def order_post_view(request):
+    return render(request, 'bidding/order_post.html')
+
+# Post Job Offer View
+def post_job_offer_view(request):
+    if request.method == 'POST':
+        form = JobForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('auction_list')
+    else:
+        form = JobForm()
+    return render(request, 'bidding/post_job_offer.html', {'form': form})
 
 # Profile View
 def profile_view(request, username):
@@ -22,18 +44,6 @@ def auction_list(request):
         if isinstance(auction.end_date, datetime):
             auction.end_date = auction.end_date.isoformat()
     return render(request, 'bidding/auction_list.html', {'auctions': auctions})
-
-# Home View
-def home(request):
-    return render(request, 'bidding/home.html')
-
-# Register View
-def register_view(request):
-    return render(request, 'bidding/register.html')
-
-# Order Post View
-def order_post_view(request):
-    return render(request, 'bidding/order_post.html')
 
 # Place Bid View
 def place_bid_view(request, id):
@@ -60,14 +70,25 @@ def create_profile_view(request):
         form = UserProfileForm()
     return render(request, 'bidding/create_profile.html', {'form': form})
 
-# Post Job Offer View
-def post_job_offer_view(request):
+# Register as Master View
+def register_as_master(request):
     if request.method == 'POST':
-        form = JobForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('auction_list')
+        user_form = UserRegistrationForm(request.POST)
+        profile_form = UserProfileForm(request.POST, request.FILES)
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save()
+            profile = profile_form.save(commit=False)
+            profile.user = user
+            profile.role = 'master'
+            profile.save()
+            login(request, user)
+            return redirect('home')  # Redirect to a different page after registration
     else:
-        form = JobForm()
-    return render(request, 'bidding/post_job_offer.html', {'form': form})
+        user_form = UserRegistrationForm()
+        profile_form = UserProfileForm()
 
+    context = {
+        'user_form': user_form,
+        'profile_form': profile_form,
+    }
+    return render(request, 'bidding/register_as_master.html', context)
