@@ -2,16 +2,11 @@ name: Django CI
 
 on:
   push:
-HEAD
     branches:
       - "main"
   pull_request:
     branches:
       - "main"
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
-origin/main
 
 jobs:
   build:
@@ -44,25 +39,10 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-<<<<<<< HEAD
       - name: Set up Node.js 20
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-=======
-    - name: Set up Node.js 20
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-
-    - name: Cache pip
-      uses: actions/cache@v4
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
->>>>>>> origin/main
 
       - name: Cache pip
         uses: actions/cache@v4
@@ -72,7 +52,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-<<<<<<< HEAD
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
@@ -92,15 +71,3 @@ jobs:
           DATABASE_URL: postgres://user:password@127.0.0.1:5432/test_db
         run: |
           python manage.py test
-=======
-    - name: Set up Database
-      run: |
-        python manage.py makemigrations
-        python manage.py migrate
-
-    - name: Run Tests
-      env:
-        DATABASE_URL: postgres://user:password@127.0.0.1:5432/test_db
-      run: |
-        python manage.py test
->>>>>>> origin/main
