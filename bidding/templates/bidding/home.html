@@ -7,7 +7,17 @@
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
 </head>
 <body>
-    <h1>Welcome to the Auction Platform</h1>
+    <h1>Patikimas būdas samdyti meistrą</h1>
+    <h2>Welcome to the Auction Platform</h2>
+    <p>Aprašykite savo darbo užduotį</p>
+    <a href="/job/post/" class="btn">Aprašyti užduotį</a>
+
+    <p>Paskelbti užsakymą</p>
+    <a href="/order/post/" class="btn">Paskelbti užsakymą</a>
+
+    <p>Registruokitės kaip meistras</p>
+    <a href="/profile/register/" class="btn">Registruokitės kaip meistras</a>
+
     <p>Use the navigation to explore the site.</p>
     <a href="{% url 'auction_list' %}">View Auctions</a>
 </body>
