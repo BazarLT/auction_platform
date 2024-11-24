@@ -2,7 +2,7 @@
 'use strict';
 
 // quickElement(tagType, parentReference [, textInChildNode, attribute, attributeValue ...]);
-function quickElement() {
+function _quickElement() {
     const obj = document.createElement(arguments[0]);
     if (arguments[2]) {
         const textNode = document.createTextNode(arguments[2]);
@@ -17,7 +17,7 @@ function quickElement() {
 }
 
 // "a" is reference to an object
-function removeChildren(a) {
+function _removeChildren(a) {
     while (a.hasChildNodes()) {
         a.removeChild(a.lastChild);
     }
@@ -27,7 +27,7 @@ function removeChildren(a) {
 // Find-position functions by PPK
 // See https://www.quirksmode.org/js/findpos.html
 // ----------------------------------------------------------------------------
-function findPosX(obj) {
+function _findPosX(obj) {
     let curleft = 0;
     if (obj.offsetParent) {
         while (obj.offsetParent) {
@@ -40,7 +40,7 @@ function findPosX(obj) {
     return curleft;
 }
 
-function findPosY(obj) {
+function _findPosY(obj) {
     let curtop = 0;
     if (obj.offsetParent) {
         while (obj.offsetParent) {
