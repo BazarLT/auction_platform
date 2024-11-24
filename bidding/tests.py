@@ -15,6 +15,7 @@ class AuctionModelTest(TestCase):
 class AuctionViewsTest(TestCase):
 
     def test_auction_list_view(self):
-        response = self.client.get('/')
+        response = self.client.get('/auctions/')
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Auction List")
+
