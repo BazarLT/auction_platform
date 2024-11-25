@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import UserProfile, Auction, Job, Bid
 from .forms import BidForm, UserProfileForm, JobForm, UserRegistrationForm
+from django.contrib.auth import login
+from datetime import datetime
 
 # Home View
 def home(request):
@@ -82,7 +84,7 @@ def register_as_master(request):
             profile.role = 'master'
             profile.save()
             login(request, user)
-            return redirect('home')  # Redirect to a different page after registration
+            return redirect('home')
     else:
         user_form = UserRegistrationForm()
         profile_form = UserProfileForm()
