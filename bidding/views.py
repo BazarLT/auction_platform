@@ -30,7 +30,7 @@ def post_job_offer_view(request):
 # Profile View
 def profile_view(request, username):
     try:
-        user_profile = UserProfile.objects.get(user__username=username)
+        user_profile = 'user__username=username'.objects.get(user__username=username)
     except UserProfile.DoesNotExist:
         return render(request, 'bidding/profile_not_found.html', {'username': username})
 
