@@ -29,8 +29,14 @@ def post_job_offer_view(request):
 
 # Profile View
 def profile_view(request, username):
-    user_profile = get_object_or_404(UserProfile, user__username=username)
-    return render(request, 'bidding/profile.html', {'user_profile': user_profile})
+    try:
+        user_profile = UserProfile.objects.get(user__username=username)
+    except UserProfile.DoesNotExist:
+        return render(request, 'bidding/profile_not_found.html', {'username': username})
+
+    jobs = Job.objects.filter(user=user_profile.user)
+    bids = Bid.objects.filter(user=user_profile.user)
+    return render(request, 'bidding/profile.html', {'user_profile': user_profile, 'jobs': jobs, 'bids': bids})
 
 # Auction Details View
 def auction_details(request, id):
@@ -77,20 +83,3 @@ def register_as_master(request):
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)
         profile_form = UserProfileForm(request.POST, request.FILES)
-        if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
-            profile = profile_form.save(commit=False)
-            profile.user = user
-            profile.role = 'master'
-            profile.save()
-            login(request, user)
-            return redirect('home')
-    else:
-        user_form = UserRegistrationForm()
-        profile_form = UserProfileForm()
-
-    context = {
-        'user_form': user_form,
-        'profile_form': profile_form,
-    }
-    return render(request, 'bidding/register_as_master.html', context)
