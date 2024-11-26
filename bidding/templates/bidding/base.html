@@ -1,6 +1,7 @@
 {% load i18n static %}
 <!DOCTYPE html>
-{% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
 <html lang="{{ LANGUAGE_CODE|default:"en-us" }}" dir="{{ LANGUAGE_BIDI|yesno:'rtl,ltr,auto' }}">
 <head>
     <title>{% block title %}{% endblock %}</title>
@@ -33,10 +34,10 @@
 <a href="#content-start" class="skip-to-content-link">{% translate 'Skip to main content' %}</a>
 <!-- Container -->
 <div id="container">
-
     {% if not is_popup %}
     <!-- Header -->
     {% block header %}
       <header id="header">
         <div id="branding">
         {% block branding %}{% endblock %}
+    {% endif %}
