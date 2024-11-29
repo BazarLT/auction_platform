@@ -1,21 +1,9 @@
-def profile_view(request, username):
-    try:
-        print(f"Attempting to fetch UserProfile for username: {username}")
-        user_profile = UserProfile.objects.get(user__username=username)
-        print(f"Found UserProfile: {user_profile}")
-    except UserProfile.DoesNotExist:
-        print(f"UserProfile does not exist for username: {username}")
-        return render(request, 'bidding/profile_not_found.html', {'username': username})
-
-    jobs = Job.objects.filter(user=user_profile.user)
-    bids = Bid.objects.filter(user=user_profile.user)
-    return render(request, 'bidding/profile.html', {'user_profile': user_profile, 'jobs': jobs, 'bids': bids})
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 from .models import UserProfile, Auction, Job, Bid
 from .forms import BidForm, UserProfileForm, JobForm, UserRegistrationForm
 from django.contrib.auth import login
 from datetime import datetime
-from django.contrib.auth.decorators import login_required
 
 # Home View
 def home(request):
@@ -28,6 +16,7 @@ def register_view(request):
 # Order Post View
 def order_post_view(request):
     return render(request, 'bidding/order_post.html')
+
 
 # Post Job Offer View
 def post_job_offer_view(request):
@@ -43,8 +32,11 @@ def post_job_offer_view(request):
 # Profile View
 def profile_view(request, username):
     try:
+        print(f"Attempting to fetch UserProfile for username: {username}")
         user_profile = UserProfile.objects.get(user__username=username)
+        print(f"Found UserProfile: {user_profile}")
     except UserProfile.DoesNotExist:
+        print(f"UserProfile does not exist for username: {username}")
         return render(request, 'bidding/profile_not_found.html', {'username': username})
 
     jobs = Job.objects.filter(user=user_profile.user)
@@ -110,11 +102,10 @@ def register_as_master(request):
         user_form = UserRegistrationForm()
         profile_form = UserProfileForm()
 
-    context = {
+    return render(request, 'bidding/register_as_master.html', {
         'user_form': user_form,
         'profile_form': profile_form,
-    }
-    return render(request, 'bidding/register_as_master.html', context)
+    })
 
 # Protected Test View
 @login_required

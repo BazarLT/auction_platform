@@ -28,7 +28,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'bidding',
-]
+'django_extensions',]
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
