@@ -1,17 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="lt">
 <head>
     <meta charset="UTF-8">
-    <title>Post an Order</title>
+    <title>Jetzt Auftrag einstellen</title>
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+    <style>
+        body {
+            background-image: url("{% static 'hammer.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .container h1 {
+            margin-bottom: 20px;
+        }
+        .container form {
+            display: flex;
+            flex-direction: column;
+        }
+        .container form input, .container form select, .container form textarea {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .container form button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .container form button:hover {
+            background-color: #0056b3;
+        }
+        .errorlist {
+            color: red;
+            list-style-type: none;
+            padding: 0;
+        }
+    </style>
 </head>
 <body>
-    <h1>Post Your Order</h1>
-    <form method="POST">
-        {% csrf_token %}
-        <!-- Add form fields here -->
-        <button type="submit">Post Order</button>
-    </form>
+    <div class="container">
+        <h1>Jetzt Auftrag einstellen</h1>
+        <form method="post" action="{% url 'order_post' %}">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="errorlist">{{ form.service_type.errors }}</div>
+            <label for="service_type">Dienstleistung:</label>
+            {{ form.service_type }}
+
+            <div class="errorlist">{{ form.description.errors }}</div>
+            <label for="description">Beschreibung:</label>
+            {{ form.description }}
+
+            <div class="errorlist">{{ form.name.errors }}</div>
+            <label for="name">Name:</label>
+            {{ form.name }}
+
+            <div class="errorlist">{{ form.phone.errors }}</div>
+            <label for="phone">Telefonnummer:</label>
+            {{ form.phone }}
+
+            <div class="errorlist">{{ form.email.errors }}</div>
+            <label for="email">E-Mail:</label>
+            {{ form.email }}
+
+            <div class="errorlist">{{ form.address.errors }}</div>
+            <label for="address">Adresse:</label>
+            {{ form.address }}
+
+            <button type="submit">Auftrag einstellen</button>
+        </form>
+        {% if errors %}
+            <ul class="errorlist">
+                {% for field, error in errors.items %}
+                    <li>{{ field }}: {{ error|join:", " }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
 </body>
 </html>
