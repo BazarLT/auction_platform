@@ -53,3 +53,23 @@ class Job(models.Model):
 
     def __str__(self):
         return self.title
+
+# ServiceRequest model
+class ServiceRequest(models.Model):
+    SERVICE_TYPES = (
+        ('electrician', 'Elektriker'),
+        ('plumber', 'Sanitärinstallateur'),
+        ('carpenter', 'Zimmerer'),
+        # Add other service types as needed
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    service_type = models.CharField(max_length=50, choices=SERVICE_TYPES)
+    description = models.TextField()
+    name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=20)
+    email = models.EmailField()
+    address = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.name} - {self.service_type}'

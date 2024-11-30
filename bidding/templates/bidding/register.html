@@ -10,7 +10,8 @@
     <h1>Register as a Craftsman</h1>
     <form method="POST">
         {% csrf_token %}
-        <!-- Add form fields here -->
+        {{ user_form.as_p }}
+        {{ profile_form.as_p }}
         <button type="submit">Register</button>
     </form>
 </body>
