@@ -17,6 +17,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 INSTALLED_APPS = [
+    # Django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -24,11 +25,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+
+    # Third-party apps
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'django_extensions',
+
+    # Project apps
     'bidding',
-'django_extensions',]
+]
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
@@ -36,7 +42,6 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SITE_ID = 1
-
 LOGIN_REDIRECT_URL = '/'
 
 MIDDLEWARE = [
@@ -47,7 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware',  # Add this line
+    'allauth.account.middleware.AccountMiddleware',  # Custom middleware for Allauth
 ]
 
 ROOT_URLCONF = 'auction_platform.urls'
