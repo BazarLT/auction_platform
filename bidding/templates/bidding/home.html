@@ -1,24 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="lt">
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title>Pagrindinis</title>
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+    <style>
+        body {
+            background-image: url("{% static 'hammer.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        nav a {
+            text-decoration: none;
+            color: #000;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>Patikimas būdas samdyti meistrą</h1>
-    <h2>Welcome to the Auction Platform</h2>
-    <p>Aprašykite savo darbo užduotį</p>
-    <a href="/job/post/" class="btn">Aprašyti užduotį</a>
-
-    <p>Paskelbti užsakymą</p>
-    <a href="/order/post/" class="btn">Paskelbti užsakymą</a>
-
-    <p>Registruokitės kaip meistras</p>
-    <a href="/profile/register/" class="btn">Registruokitės kaip meistras</a>
-
-    <p>Use the navigation to explore the site.</p>
-    <a href="{% url 'auction_list' %}">View Auctions</a>
+    <nav>
+        <a href="{% url 'home' %}">Pagrindinis</a>
+        <a href="{% url 'order_post' %}">Paskelbti Užsakymą</a> <!-- Updated URL name -->
+        <a href="{% url 'auction_list' %}">Užsakymų Sąrašas</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'profile_view' user.username %}">Profilis</a>
+        {% else %}
+            <a href="{% url 'login' %}">Prisijungti</a>
+            <a href="{% url 'register_view' %}">Registruotis</a>
+        {% endif %}
+    </nav>
+    <h1>Sveiki atvykę į Aukciono Platformą</h1>
+    <p>Prisijunkite ir pradėkite dalyvauti aukcionuose!</p>
 </body>
 </html>

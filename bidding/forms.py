@@ -1,10 +1,11 @@
 from django import forms
-from .models import Auction, Bid, UserProfile, Job
+from django.contrib.auth.models import User
+from .models import Auction, Bid, UserProfile, Job, ServiceRequest
 
 class AuctionForm(forms.ModelForm):
     class Meta:
         model = Auction
-        fields = ['title', 'description', 'price', 'end_date']
+        fields = ['title', 'description', 'starting_bid', 'price', 'end_date']
 
 class BidForm(forms.ModelForm):
     class Meta:
@@ -14,9 +15,28 @@ class BidForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['bio', 'location', 'birth_date', 'profile_picture']
+        fields = ['phone_number', 'email', 'bio', 'location', 'birth_date', 'profile_picture']
+
+class UserRegistrationForm(forms.ModelForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password']
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data['password'])
+        if commit:
+            user.save()
+        return user
 
 class JobForm(forms.ModelForm):
     class Meta:
         model = Job
         fields = ['title', 'description', 'start_price', 'end_date']
+
+class ServiceRequestForm(forms.ModelForm):
+    class Meta:
+        model = ServiceRequest
+        fields = ['service_type', 'description', 'name', 'phone', 'email', 'address']
