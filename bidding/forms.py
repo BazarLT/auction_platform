@@ -37,6 +37,8 @@ class JobForm(forms.ModelForm):
         fields = ['title', 'description', 'start_price', 'end_date']
 
 class ServiceRequestForm(forms.ModelForm):
+    starting_bid = forms.DecimalField(max_digits=10, decimal_places=2, initial=0.0)  # Add starting bid field
+
     class Meta:
         model = ServiceRequest
-        fields = ['service_type', 'description', 'name', 'phone', 'email', 'address']
+        fields = ['service_type', 'description', 'name', 'phone', 'email', 'address', 'starting_bid']

@@ -57,30 +57,35 @@
         <form method="post" action="{% url 'order_post' %}">
             {% csrf_token %}
             {{ form.non_field_errors }}
+            
             <div class="errorlist">{{ form.service_type.errors }}</div>
             <label for="service_type">Dienstleistung:</label>
             {{ form.service_type }}
-
+            
             <div class="errorlist">{{ form.description.errors }}</div>
             <label for="description">Beschreibung:</label>
             {{ form.description }}
-
+            
             <div class="errorlist">{{ form.name.errors }}</div>
             <label for="name">Name:</label>
             {{ form.name }}
-
+            
             <div class="errorlist">{{ form.phone.errors }}</div>
             <label for="phone">Telefonnummer:</label>
             {{ form.phone }}
-
+            
             <div class="errorlist">{{ form.email.errors }}</div>
             <label for="email">E-Mail:</label>
             {{ form.email }}
-
+            
             <div class="errorlist">{{ form.address.errors }}</div>
             <label for="address">Adresse:</label>
             {{ form.address }}
-
+            
+            <div class="errorlist">{{ form.starting_bid.errors }}</div>
+            <label for="starting_bid">Startpreis:</label>
+            {{ form.starting_bid }}
+            
             <button type="submit">Auftrag einstellen</button>
         </form>
         {% if errors %}

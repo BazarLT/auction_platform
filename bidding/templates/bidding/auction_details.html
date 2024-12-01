@@ -6,9 +6,10 @@
 </head>
 <body>
     <h1>{{ auction.title }}</h1>
-    <p>Price: ${{ auction.price }}</p>
     <p>{{ auction.description }}</p>
+    <p>Starting Bid: {{ auction.starting_bid }}</p>
+    <p>Current Bid: {{ auction.current_bid }}</p>
     <p>End Date: {{ auction.end_date }}</p>
-    <p>Seller: {{ auction.seller.user.username }}</p>
+    <a href="{% url 'place_bid' auction.id %}">Place a Bid</a>
 </body>
 </html>
