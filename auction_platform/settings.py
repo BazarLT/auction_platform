@@ -42,7 +42,15 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SITE_ID = 1
+# settings.py
+
 LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+ACCOUNT_AUTHENTICATION_METHOD = 'username'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
+ACCOUNT_SIGNUP_FORM_CLASS = 'bidding.forms.SignUpForm'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -60,7 +68,7 @@ ROOT_URLCONF = 'auction_platform.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'bidding', 'templates')],  # Ensure this line points to the templates directory
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -80,7 +88,7 @@ WSGI_APPLICATION = 'auction_platform.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',  # Pointing to the centralized location
     }
 }
 
@@ -129,5 +137,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'your_email@gmail.com'
-EMAIL_HOST_PASSWORD = 'your_email_password'
+EMAIL_HOST_USER = 'jobvital@gmail.com'
+EMAIL_HOST_PASSWORD = 'Vilnius123'

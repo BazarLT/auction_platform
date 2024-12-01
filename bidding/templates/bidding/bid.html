@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Place Bid</title>
+</head>
+<body>
+    <h1>Place Bid for {{ auction.title }}</h1>
+    <p>{{ auction.description }}</p>
+    <p>Starting Bid: {{ auction.starting_bid }}</p>
+    <form method="post">
+        {% csrf_token %}
+        <label for="bid_amount">Your Bid:</label>
+        <input type="number" id="bid_amount" name="bid_amount" required>
+        <button type="submit">Place Bid</button>
+    </form>
+</body>
+</html>

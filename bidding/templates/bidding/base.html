@@ -39,4 +39,25 @@
     {% block header %}
       <header id="header">
         <div id="branding">
-        {% block branding %}{% endblock %}
+          {% block branding %}{% endblock %}
+        </div>
+        <nav>
+            <ul>
+                {% if user.is_authenticated %}
+                    <li>Welcome, {{ user.username }}!</li>
+                    <li><a href="{% url 'account_logout' %}">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'account_login' %}">Login</a></li>
+                    <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+      </header>
+    {% endblock %}
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}
+</div>
+</body>
+</html>

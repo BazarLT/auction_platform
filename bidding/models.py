@@ -24,7 +24,8 @@ class UserProfile(models.Model):
 class Auction(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
-    starting_bid = models.DecimalField(max_digits=10, decimal_places=2)  # Added starting_bid field
+    starting_bid = models.DecimalField(max_digits=10, decimal_places=2)
+    current_bid = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)  # Added current_bid field
     price = models.DecimalField(max_digits=10, decimal_places=2)
     end_date = models.DateTimeField()
     seller = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
