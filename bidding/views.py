@@ -191,11 +191,11 @@ def order_post_create(request):
 
 @login_required
 def profile_view(request, username):
-    profile = get_object_or_404(UserProfile, user__username=username)
-    return render(request, 'bidding/profile.html', {'profile': profile})
-
-def test_view(request):
-    pass  # Implementation here
-
-def order_post_success(request):
-    return render(request, 'bidding/order_post_success.html')
+    user_profile = get_object_or_404(UserProfile, user__username=username)
+    jobs = user_profile.job_set.all()
+    bids = user_profile.bid_set.all()
+    return render(request, 'bidding/profile.html', {
+        'user_profile': user_profile,
+        'jobs': jobs,
+        'bids': bids,
+    })

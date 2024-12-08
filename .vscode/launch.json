@@ -1,7 +1,13 @@
 {
     "version": "0.2.0",
     "configurations": [
-
+        {
+            "name": "Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
         {
             "name": "Python: Django",
             "type": "debugpy",
@@ -9,7 +15,7 @@
             "program": "${workspaceFolder}/manage.py",
             "args": [
                 "runserver",
-                "--noreload"  // Prevents double-starting of the server for debugging
+                "--noreload" // Prevents double-starting of the server for debugging
             ],
             "django": true,
             "console": "integratedTerminal",

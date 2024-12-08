@@ -63,10 +63,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'auction_platform.urls'
 
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'bidding', 'templates')],  # Ensure this line points to the templates directory
+        'DIRS': [os.path.join(BASE_DIR, 'bidding', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,10 +75,12 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.i18n',  # Ensure this line is included
             ],
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'auction_platform.wsgi.application'
 
