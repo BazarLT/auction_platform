@@ -10,6 +10,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('order/post/', views.order_post_view, name='order_post'),
     path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('accounts/', include('allauth.urls')),  # Ensure this line is included
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('bidding/', include('bidding.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # Add this line to serve media files
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # Serve media files
