@@ -126,13 +126,19 @@ def order_post_view(request):
             return redirect('order_post_success')
     else:
         form = OrderForm()
-    return render(request, 'bidding/post_offer.html', {
+    
+    # Create the context dictionary and verify the URL pattern name
+    context = {
         'form': form,
         'form_title': 'Post Auction',
         'form_description': 'Please fill out the form to post your auction.',
-        'form_action': reverse('order_post_view'),
+        'form_action': reverse('order_post_view'),  # Ensure this URL name is correct
         'form_button': 'Submit'
-    })
+    }
+    
+    print(context)  # Debug statement
+    
+    return render(request, 'bidding/post_offer.html', context)
 
 @login_required
 def order_post_create(request):
