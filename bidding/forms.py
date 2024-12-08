@@ -1,6 +1,12 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Auction, Bid, UserProfile, Job, ServiceRequest
+from .models import Auction, Bid, UserProfile, Job, ServiceRequest, Order
+
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ['name', 'description', 'address', 'image', 'price']  # Ensure 'price' is included
+
 
 class AuctionForm(forms.ModelForm):
     class Meta:
@@ -37,7 +43,7 @@ class JobForm(forms.ModelForm):
         fields = ['title', 'description', 'start_price', 'end_date']
 
 class ServiceRequestForm(forms.ModelForm):
-    starting_bid = forms.DecimalField(max_digits=10, decimal_places=2, initial=0.0)  # Add starting bid field
+    starting_bid = forms.DecimalField(max_digits=10, decimal_places=2, initial=0.0)
 
     class Meta:
         model = ServiceRequest

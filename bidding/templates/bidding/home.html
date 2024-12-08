@@ -28,13 +28,13 @@
 <body>
     <nav>
         <a href="{% url 'home' %}">Pagrindinis</a>
-        <a href="{% url 'order_post' %}">Paskelbti Užsakymą</a> <!-- Updated URL name -->
+        <a href="{% url 'order_post_view' %}">Paskelbti Užsakymą</a>
         <a href="{% url 'auction_list' %}">Užsakymų Sąrašas</a>
         {% if user.is_authenticated %}
             <a href="{% url 'profile_view' user.username %}">Profilis</a>
         {% else %}
             <a href="{% url 'login' %}">Prisijungti</a>
-            <a href="{% url 'register_view' %}">Registruotis</a>
+            <a href="{% url 'register_view' %}">Registruotis</a> <!-- Corrected URL name -->
         {% endif %}
     </nav>
     <h1>Sveiki atvykę į Aukciono Platformą</h1>

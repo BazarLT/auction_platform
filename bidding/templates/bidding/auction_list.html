@@ -15,8 +15,11 @@
             <p>Price: ${{ auction.price }}</p>
             <p>{{ auction.description }}</p>
             <p>End Date: {{ auction.end_date }}</p>
-            <p>Seller: {{ auction.seller.username }}</p>
-            <button onclick="location.href='{% url 'bid' auction.id %}'">Bid Now</button>
+            <p>Seller: {{ auction.seller.user.username }}</p>
+            {% if auction.image %}
+                <img src="{{ auction.image.url }}" alt="{{ auction.title }} Image" style="width:200px;height:auto;">
+            {% endif %}
+            <button onclick="location.href='{% url 'place_bid' auction.id %}'">Bid Now</button>
             <button onclick="location.href='{% url 'auction_details' auction.id %}'">View Details</button>
             <button onclick="alert('Share functionality coming soon!')">Share</button>
         </li>
