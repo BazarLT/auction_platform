@@ -5,8 +5,7 @@ from .models import Auction, Bid, UserProfile, Job, ServiceRequest, Order
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['name', 'description', 'address', 'image', 'price']  # Ensure 'price' is included
-
+        fields = ['name', 'description', 'address', 'image', 'price']
 
 class AuctionForm(forms.ModelForm):
     class Meta:

@@ -31,7 +31,6 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'django_extensions',
-    'anymail',  # Add Anymail to installed apps
 
     # Project apps
     'bidding',
@@ -44,14 +43,12 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-# settings.py
-
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
-ACCOUNT_SIGNUP_FORM_CLASS = 'bidding.forms.SignUpForm'
+ACCOUNT_SIGNUP_FORM_CLASS = 'bidding.allauth_forms.SignUpForm'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -133,13 +130,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Email backend settings
-EMAIL_BACKEND = "anymail.backends.sendgrid.EmailBackend"
-ANYMAIL = {
-    "SENDGRID_API_KEY": "your_sendgrid_api_key",
-}
 
-# Optionally, you can specify additional SendGrid settings
-SENDGRID_SANDBOX_MODE_IN_DEBUG = False
-SENDGRID_ECHO_TO_STDOUT = True
+# settings.py
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'jobvital@googlemail.com'  # Your Gmail address
+EMAIL_HOST_PASSWORD = 'v3i3 vesu hmyb anp5 bux5 ured 2luh jfyk'  # Use the generated App Password
 
