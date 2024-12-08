@@ -1,7 +1,7 @@
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import User
 
-# Extending the User model with UserProfile
 class UserProfile(models.Model):
     USER_ROLES = (
         ('client', 'Client'),
@@ -14,26 +14,25 @@ class UserProfile(models.Model):
     location = models.CharField(max_length=100, blank=True)
     birth_date = models.DateField(null=True, blank=True)
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True)
-    phone_number = models.CharField(max_length=15, blank=True)  # Added phone number field
-    email = models.EmailField(blank=True)  # Added email field
+    phone_number = models.CharField(max_length=15, blank=True)
+    email = models.EmailField(blank=True)
 
     def __str__(self):
         return self.user.username
 
-# Auction model
 class Auction(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
     starting_bid = models.DecimalField(max_digits=10, decimal_places=2)
-    current_bid = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)  # Added current_bid field
+    current_bid = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     end_date = models.DateTimeField()
     seller = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='auctions/', blank=True, null=True)  # Ensure image field is included
 
     def __str__(self):
         return self.title
 
-# Bid model
 class Bid(models.Model):
     auction = models.ForeignKey(Auction, on_delete=models.CASCADE)
     bid_amount = models.DecimalField(max_digits=10, decimal_places=2)
@@ -43,7 +42,6 @@ class Bid(models.Model):
     def __str__(self):
         return f"{self.bidder_name} - {self.bid_amount}"
 
-# Job model
 class Job(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
@@ -55,13 +53,11 @@ class Job(models.Model):
     def __str__(self):
         return self.title
 
-# ServiceRequest model
 class ServiceRequest(models.Model):
     SERVICE_TYPES = (
         ('electrician', 'Elektriker'),
         ('plumber', 'Sanitärinstallateur'),
         ('carpenter', 'Zimmerer'),
-        # Add other service types as needed
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     service_type = models.CharField(max_length=50, choices=SERVICE_TYPES)
@@ -74,3 +70,14 @@ class ServiceRequest(models.Model):
 
     def __str__(self):
         return f'{self.name} - {self.service_type}'
+
+class Order(models.Model):
+    name = models.CharField(max_length=255, default='Default Name')
+    description = models.TextField(default='Default Description')
+    address = models.CharField(max_length=255, default='Default Address')
+    image = models.ImageField(upload_to='orders/', blank=True, null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)  # Adding price field
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name

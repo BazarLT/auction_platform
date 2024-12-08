@@ -3,16 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Place Bid for {{ auction.title }}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 <body>
-    <h1>Place Bid for {{ auction.title }}</h1>
-    <p>{{ auction.description }}</p>
-    <p>Starting Bid: {{ auction.starting_bid }}</p>
-    <p>Current Bid: {{ auction.current_bid }}</p>  <!-- Display current bid -->
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Place Bid</button>
-    </form>
+    <div class="container">
+        <h1>Place Bid for {{ auction.title }}</h1>
+        <p>{{ auction.description }}</p>
+        <p>Starting Bid: {{ auction.starting_bid }}</p>
+        <p>Current Bid: {{ auction.current_bid }}</p>  <!-- Display current bid -->
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.bid_amount.label_tag }}
+                {{ form.bid_amount }}
+            </div>
+            <div class="form-group">
+                {{ form.bidder_name.label_tag }}
+                {{ form.bidder_name }}
+            </div>
+            <button type="submit">Place Bid</button>
+        </form>
+    </div>
 </body>
 </html>

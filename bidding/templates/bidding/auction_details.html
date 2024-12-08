@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ auction.title }}</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
 </head>
 <body>
-    <h1>{{ auction.title }}</h1>
-    <p>{{ auction.description }}</p>
-    <p>Starting Bid: {{ auction.starting_bid }}</p>
-    <p>Current Bid: {{ auction.current_bid }}</p>
-    <p>End Date: {{ auction.end_date }}</p>
-    <a href="{% url 'place_bid' auction.id %}">Place a Bid</a>
+    <div class="container">
+        <h1>{{ auction.title }}</h1>
+        <p>{{ auction.description }}</p>
+        <p>Starting Bid: ${{ auction.starting_bid }}</p>
+        <p>Current Bid: ${{ auction.current_bid }}</p>
+        <p>End Date: {{ auction.end_date }}</p>
+        <a href="{% url 'place_bid' auction.id %}" class="btn">Place a Bid</a> <!-- Adding a class for button styling -->
+    </div>
 </body>
 </html>
