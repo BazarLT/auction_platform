@@ -23,15 +23,19 @@
             color: #000;
             font-weight: bold;
         }
+        nav a i {
+            margin-right: 8px;  /* Adds some space between the icon and text */
+        }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
     <nav>
-        <a href="{% url 'home' %}">Pagrindinis</a>
-        <a href="{% url 'order_post_view' %}">Paskelbti Užsakymą</a>
-        <a href="{% url 'auction_list' %}">Užsakymų Sąrašas</a>
+        <a href="{% url 'home' %}"><i class="fas fa-home"></i> Pagrindinis</a>
+        <a href="{% url 'order_post_view' %}"><i class="fas fa-hammer"></i> Paskelbti Užsakymą</a>
+        <a href="{% url 'auction_list' %}"><i class="fas fa-dollar-sign"></i> Užsakymų Sąrašas</a>
         {% if user.is_authenticated %}
-            <a href="{% url 'profile_view' user.username %}">Profilis</a>
+            <a href="{% url 'profile_view' user.username %}"><i class="fas fa-user"></i> Profilis</a>
         {% else %}
             <a href="{% url 'login' %}">Prisijungti</a>
             <a href="{% url 'register_view' %}">Registruotis</a> <!-- Corrected URL name -->

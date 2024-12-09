@@ -1,5 +1,6 @@
+# models.py
+
 from django.db import models
-from django.utils import timezone
 from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
@@ -28,19 +29,19 @@ class Auction(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     end_date = models.DateTimeField()
     seller = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='auctions/', blank=True, null=True)  # Ensure image field is included
+    image = models.ImageField(upload_to='auctions/', blank=True, null=True)
 
     def __str__(self):
         return self.title
 
 class Bid(models.Model):
     auction = models.ForeignKey(Auction, on_delete=models.CASCADE)
+    bidder = models.ForeignKey(UserProfile, on_delete=models.CASCADE)  # Foreign key to UserProfile
     bid_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    bidder_name = models.CharField(max_length=200)
     bid_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.bidder_name} - {self.bid_amount}"
+        return f"{self.bidder.user.username} - {self.bid_amount}"
 
 class Job(models.Model):
     title = models.CharField(max_length=200)
@@ -76,7 +77,7 @@ class Order(models.Model):
     description = models.TextField(default='Default Description')
     address = models.CharField(max_length=255, default='Default Address')
     image = models.ImageField(upload_to='orders/', blank=True, null=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)  # Adding price field
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

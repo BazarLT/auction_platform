@@ -1,12 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Success</title>
-</head>
-<body>
-    <h1>Užsakymas išleistas!</h1>
-    <p>Your order has been successfully posted.</p>
-    <a href="{% url 'auction_list' %}">Back to Auctions</a>
-</body>
-</html>
+{% extends "bidding/base.html" %}
+
+{% block title %}Order Posted Successfully{% endblock %}
+
+{% block content %}
+    <div class="success-container">
+        <h1>Užsakymas išleistas!</h1>
+        <p>Your order has been successfully posted.</p>
+        <a href="{% url 'auction_list' %}">Back to Auctions</a>
+    </div>
+{% endblock %}

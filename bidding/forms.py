@@ -15,7 +15,7 @@ class AuctionForm(forms.ModelForm):
 class BidForm(forms.ModelForm):
     class Meta:
         model = Bid
-        fields = ['bid_amount', 'bidder_name']
+        fields = ['bid_amount',]
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
