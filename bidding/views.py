@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from .models import Auction, ServiceRequest, UserProfile, Bid, Order
-from .forms import ServiceRequestForm, BidForm, OrderForm, UserRegistrationForm, UserProfileForm, AuctionForm
+from .forms import JobForm, ServiceRequestForm, BidForm, OrderForm, UserRegistrationForm, UserProfileForm, AuctionForm
 from datetime import datetime, timedelta
 from django.core.mail import send_mail
 from django.utils import timezone
