@@ -12,7 +12,10 @@
         <div class="section-title">Jobs Posted</div>
         <ul>
             {% for job in jobs %}
-                <li>{{ job.title }} - {{ job.description }}</li>
+                <li>{{ job.title }} - {{ job.description }}
+                    <a href="{% url 'edit_order' job.id %}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{% url 'delete_order' job.id %}" class="btn btn-danger btn-sm">Delete</a>
+                </li>
             {% empty %}
                 <li>No jobs posted</li>
             {% endfor %}
@@ -21,10 +24,15 @@
         <div class="section-title">Bids Placed</div>
         <ul>
             {% for bid in bids %}
-                <li>Bid on {{ bid.job.title }}: {{ bid.amount }}</li>
+                <li>Bid on {{ bid.auction.title }}: {{ bid.bid_amount }}</li>
             {% empty %}
                 <li>No bids placed</li>
             {% endfor %}
         </ul>
+
+        <!-- Add the Return to Main Page button -->
+        <a href="{% url 'home' %}" class="btn btn-primary return-button">
+            <i class="fas fa-home"></i> Return to Main Page
+        </a>
     </div>
 {% endblock %}
