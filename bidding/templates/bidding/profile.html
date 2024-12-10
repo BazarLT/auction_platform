@@ -1,18 +1,25 @@
 {% extends "bidding/base.html" %}
+{% load static %} <!-- Ensure this line is included -->
 
 {% block title %}Profile - {{ user_profile.user.username }}{% endblock %}
 
 {% block content %}
-    <div class="profile-container">
-        <h1>{{ user_profile.user.username }}'s Profile</h1>
-        <p>Bio: {{ user_profile.bio }}</p>
-        <p>Location: {{ user_profile.location }}</p>
-        <p>Birth Date: {{ user_profile.birth_date }}</p>
+<div class="profile-container">
+    <div class="profile-header">
+        <img src="{% static 'images/profile_placeholder.png' %}" alt="{{ user_profile.user.username }}'s Profile Picture" class="profile-picture">
+        <h1>{{ user_profile.user.username }}</h1>
+        <p class="bio">{{ user_profile.bio }}</p>
+        <p class="location"><i class="fas fa-map-marker-alt"></i> {{ user_profile.location }}</p>
+        <p class="birth-date"><i class="fas fa-birthday-cake"></i> {{ user_profile.birth_date }}</p>
+    </div>
 
-        <div class="section-title">Jobs Posted</div>
-        <ul>
+    <div class="jobs-section">
+        <h2>Jobs Posted</h2>
+        <ul class="jobs-list">
             {% for job in jobs %}
-                <li>{{ job.title }} - {{ job.description }}
+                <li class="job-item">
+                    <div class="job-title">{{ job.title }}</div>
+                    <div class="job-description">{{ job.description }}</div>
                     <a href="{% url 'edit_order' job.id %}" class="btn btn-warning btn-sm">Edit</a>
                     <a href="{% url 'delete_order' job.id %}" class="btn btn-danger btn-sm">Delete</a>
                 </li>
@@ -20,19 +27,24 @@
                 <li>No jobs posted</li>
             {% endfor %}
         </ul>
+    </div>
 
-        <div class="section-title">Bids Placed</div>
-        <ul>
+    <div class="bids-section">
+        <h2>Bids Placed</h2>
+        <ul class="bids-list">
             {% for bid in bids %}
-                <li>Bid on {{ bid.auction.title }}: {{ bid.bid_amount }}</li>
+                <li class="bid-item">
+                    Bid on <strong>{{ bid.auction.title }}</strong>: {{ bid.bid_amount }}
+                </li>
             {% empty %}
                 <li>No bids placed</li>
             {% endfor %}
         </ul>
-
-        <!-- Add the Return to Main Page button -->
-        <a href="{% url 'home' %}" class="btn btn-primary return-button">
-            <i class="fas fa-home"></i> Return to Main Page
-        </a>
     </div>
+
+    <!-- Return to Main Page button -->
+    <a href="{% url 'home' %}" class="btn btn-primary return-button">
+        <i class="fas fa-home"></i> Pagrindinis
+    </a>
+</div>
 {% endblock %}
