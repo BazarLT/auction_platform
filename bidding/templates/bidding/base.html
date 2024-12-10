@@ -55,3 +55,21 @@
                     <li>Welcome, {{ user.username }}!</li>
                     <li><a href="{% url 'account_logout' %}">Logout</a></li>
                 {% else %}
+                    <li><a href="{% url 'account_login' %}">Login</a></li>
+                    <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+      </header>
+    {% endblock %}
+    {% endif %}
+
+    {% block content %}
+    <div class="container">
+        <h1>Welcome to the Auction Platform</h1>
+        <p>Sign in and start participating in auctions!</p>
+    </div>
+    {% endblock %}
+</div>
+</body>
+</html>
