@@ -1,50 +1,140 @@
 {% extends "bidding/base.html" %}
-{% load static %} <!-- Ensure this line is included -->
+{% load static %}
 
 {% block title %}Profile - {{ user_profile.user.username }}{% endblock %}
+
+{% block extrastyle %}
+<style>
+    .profile-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+    }
+    .profile-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .profile-header h1 {
+        color: #333333;
+    }
+    .profile-header p {
+        color: #666666;
+        margin: 5px 0;
+    }
+    .profile-picture {
+        margin-bottom: 20px;
+    }
+    .profile-picture img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        border: 2px solid #dddddd;
+    }
+    .section-title {
+        font-size: 1.5rem;
+        color: #444444;
+        margin-bottom: 10px;
+    }
+    .jobs-section, .bids-section {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .jobs-list, .bids-list {
+        list-style: none;
+        padding: 0;
+    }
+    .job-item, .bid-item {
+        background: #f8f8f8;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #dddddd;
+        border-radius: 4px;
+    }
+    .job-title, .bid-details {
+        color: #1a73e8;
+        font-weight: bold;
+    }
+    .job-description, .bid-details {
+        color: #555555;
+    }
+    .profile-actions {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+    }
+    .profile-actions a {
+        color: #ffffff;
+        background-color: #1a73e8;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        margin: 0 10px;
+    }
+    .profile-actions a:hover {
+        background-color: #135ba1;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
 <div class="profile-container">
     <div class="profile-header">
-        <img src="{% static 'images/profile_placeholder.png' %}" alt="{{ user_profile.user.username }}'s Profile Picture" class="profile-picture">
         <h1>{{ user_profile.user.username }}</h1>
         <p class="bio">{{ user_profile.bio }}</p>
         <p class="location"><i class="fas fa-map-marker-alt"></i> {{ user_profile.location }}</p>
         <p class="birth-date"><i class="fas fa-birthday-cake"></i> {{ user_profile.birth_date }}</p>
     </div>
 
+    <div class="profile-picture">
+        {% if user_profile.profile_picture %}
+            <img src="{{ user_profile.profile_picture.url }}" alt="{{ user_profile.user.username }}'s Profile Picture">
+        {% endif %}
+    </div>
+
     <div class="jobs-section">
-        <h2>Jobs Posted</h2>
+        <div class="section-title">Jobs Posted</div>
         <ul class="jobs-list">
             {% for job in jobs %}
                 <li class="job-item">
                     <div class="job-title">{{ job.title }}</div>
                     <div class="job-description">{{ job.description }}</div>
-                    <a href="{% url 'edit_order' job.id %}" class="btn btn-warning btn-sm">Edit</a>
-                    <a href="{% url 'delete_order' job.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    <div class="profile-actions">
+                        <a href="{% url 'edit_order' job.id %}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{% url 'delete_order' job.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
                 </li>
             {% empty %}
-                <li>No jobs posted</li>
+                <li class="job-item">No jobs posted</li>
             {% endfor %}
         </ul>
     </div>
 
     <div class="bids-section">
-        <h2>Bids Placed</h2>
+        <div class="section-title">Bids Placed</div>
         <ul class="bids-list">
             {% for bid in bids %}
                 <li class="bid-item">
-                    Bid on <strong>{{ bid.auction.title }}</strong>: {{ bid.bid_amount }}
+                    <div class="bid-details">
+                        Bid on <strong>{{ bid.auction.title }}</strong>
+                    </div>
+                    <div class="bid-amount">{{ bid.bid_amount }}</div>
                 </li>
             {% empty %}
-                <li>No bids placed</li>
+                <li class="bid-item">No bids placed</li>
             {% endfor %}
         </ul>
     </div>
 
-    <!-- Return to Main Page button -->
-    <a href="{% url 'home' %}" class="btn btn-primary return-button">
-        <i class="fas fa-home"></i> Pagrindinis
-    </a>
+    <div class="profile-actions">
+        <a href="{% url 'home' %}"><i class="fas fa-home"></i> Pagrindinis</a>
+        <a href="{% url 'edit_profile' user_profile.user.username %}">Edit Profile</a>
+        <a href="{% url 'account_logout' %}">Logout</a>
+    </div>
 </div>
 {% endblock %}

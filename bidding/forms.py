@@ -1,6 +1,6 @@
 from django import forms
-from django.contrib.auth.models import User
-from .models import Auction, Bid, UserProfile, Job, ServiceRequest, Order
+from django.contrib.auth.models import User  # Import User model
+from .models import Auction, AuctionImage, Bid, UserProfile, UserProfileImage, Job, ServiceRequest, Order
 
 class OrderForm(forms.ModelForm):
     class Meta:
@@ -12,6 +12,13 @@ class AuctionForm(forms.ModelForm):
         model = Auction
         fields = ['title', 'description', 'starting_bid', 'price', 'end_date']
 
+class AuctionImageForm(forms.ModelForm):
+    class Meta:
+        model = AuctionImage
+        fields = ['image']
+
+AuctionImageFormSet = forms.inlineformset_factory(Auction, AuctionImage, form=AuctionImageForm, extra=5, max_num=5)
+
 class BidForm(forms.ModelForm):
     class Meta:
         model = Bid
@@ -20,7 +27,14 @@ class BidForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['phone_number', 'email', 'bio', 'location', 'birth_date', 'profile_picture']
+        fields = ['phone_number', 'email', 'bio', 'location', 'birth_date']
+
+class UserProfileImageForm(forms.ModelForm):
+    class Meta:
+        model = UserProfileImage
+        fields = ['image']
+
+UserProfileImageFormSet = forms.inlineformset_factory(UserProfile, UserProfileImage, form=UserProfileImageForm, extra=5, max_num=5)
 
 class UserRegistrationForm(forms.ModelForm):
     email = forms.EmailField(required=True)

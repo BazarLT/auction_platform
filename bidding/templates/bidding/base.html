@@ -2,6 +2,12 @@
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE|default:'en-us' }}" dir="{{ LANGUAGE_BIDI|yesno:'rtl,ltr,auto' }}">
 <head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Participate in exciting auctions on our platform. Sign in now!">
+    <meta name="keywords" content="auction, bid, online auction, buy and sell">
+    <meta name="author" content="Your Company Name">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static '16x16.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static '32x32.png' %}">
@@ -24,13 +30,53 @@
         <link rel="stylesheet" href="{% static 'admin/css/nav_sidebar.css' %}">
         <script src="{% static 'admin/js/nav_sidebar.js' %}" defer></script>
     {% endif %}
-    {% block extrastyle %}{% endblock %}
+    {% block extrastyle %}
+    <style>
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        nav ul li {
+            margin-left: 20px;
+        }
+        nav ul li a {
+            color: #007bff !important;
+        }
+        nav ul li a:hover {
+            color: #0056b3 !important;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
+        .header-right li {
+            margin-left: 10px;
+        }
+        .btn {
+            color: white;
+            background-color: #007bff;
+            padding: 5px 10px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    {% endblock %}
     {% if LANGUAGE_BIDI %}
         <link rel="stylesheet" href="{% block stylesheet_rtl %}<link rel="stylesheet" href="{% static 'admin/css/rtl.css' %}">{% endblock %}">
     {% endif %}
     {% block extrahead %}{% endblock %}
     {% block responsive %}
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="{% static 'admin/css/responsive.css' %}">
         {% if LANGUAGE_BIDI %}
             <link rel="stylesheet" href="{% static 'admin/css/responsive_rtl.css' %}">
@@ -45,18 +91,21 @@
     {% if not is_popup %}
     <!-- Header -->
     {% block header %}
-      <header id="header">
+      <header id="header" role="banner">
         <div id="branding">
           {% block branding %}{% endblock %}
         </div>
-        <nav>
+        <nav role="navigation">
             <ul>
+                <li><a href="{% url 'home' %}"><i class="fas fa-home"></i> Pagrindinis</a></li>
+            </ul>
+            <ul class="header-right">
                 {% if user.is_authenticated %}
                     <li>Welcome, {{ user.username }}!</li>
-                    <li><a href="{% url 'account_logout' %}">Logout</a></li>
+                    <li><a href="{% url 'account_logout' %}" class="btn">Logout</a></li>
                 {% else %}
-                    <li><a href="{% url 'account_login' %}">Login</a></li>
-                    <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+                    <li><a href="{% url 'account_login' %}" class="btn">Login</a></li>
+                    <li><a href="{% url 'account_signup' %}" class="btn">Sign Up</a></li>
                 {% endif %}
             </ul>
         </nav>
@@ -65,10 +114,10 @@
     {% endif %}
 
     {% block content %}
-    <div class="container">
+    <main id="content-start" role="main" class="container">
         <h1>Welcome to the Auction Platform</h1>
         <p>Sign in and start participating in auctions!</p>
-    </div>
+    </main>
     {% endblock %}
 </div>
 </body>

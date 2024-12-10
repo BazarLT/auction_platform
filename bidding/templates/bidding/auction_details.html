@@ -1,19 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ auction.title }}</title>
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
-</head>
-<body>
-    <div class="container">
-        <h1>{{ auction.title }}</h1>
-        <p>{{ auction.description }}</p>
-        <p>Starting Bid: ${{ auction.starting_bid }}</p>
-        <p>Current Bid: ${{ auction.current_bid }}</p>
-        <p>End Date: {{ auction.end_date }}</p>
-        <a href="{% url 'place_bid' auction.id %}" class="btn">Place a Bid</a> <!-- Adding a class for button styling -->
+{% extends "bidding/base.html" %}
+{% load static %}
+
+{% block title %}Auction Details - {{ auction.title }}{% endblock %}
+
+{% block extrastyle %}
+<style>
+    .auction-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    .auction-container h1 {
+        margin-bottom: 20px;
+    }
+    .auction-container p {
+        margin-bottom: 10px;
+        font-size: 16px;
+        color: #555555;
+    }
+    .auction-images {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    .auction-images img {
+        max-width: 150px;
+        border-radius: 5px;
+        border: 2px solid #ddd;
+    }
+    .btn {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    .btn:hover {
+        background-color: #0056b3;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auction-container">
+    <h1>{{ auction.title }}</h1>
+    <p>{{ auction.description }}</p>
+    <p>Starting Bid: ${{ auction.starting_bid }}</p>
+    <p>Current Bid: ${{ auction.current_bid }}</p>
+    <p>End Date: {{ auction.end_date }}</p>
+    <h3>Images:</h3>
+    <div class="auction-images">
+        {% for image in auction.images.all %}
+            <img src="{{ image.image.url }}" alt="{{ auction.title }} Image">
+        {% endfor %}
     </div>
-</body>
-</html>
+    <a href="{% url 'place_bid' auction.id %}" class="btn">Place a Bid</a>
+</div>
+{% endblock %}

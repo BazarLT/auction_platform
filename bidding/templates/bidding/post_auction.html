@@ -1,0 +1,76 @@
+{% extends "bidding/base.html" %}
+{% load static %}
+
+{% block title %}Post Auction{% endblock %}
+
+{% block extrastyle %}
+<style>
+    body {
+        background-color: #f0f0f0; /* Light background color */
+        font-family: Arial, sans-serif;
+    }
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+    }
+    .container h1 {
+        margin-bottom: 20px;
+    }
+    .container form {
+        display: flex;
+        flex-direction: column;
+    }
+    .container form input,
+    .container form select,
+    .container form textarea {
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .container form button {
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .container form button:hover {
+        background-color: #0056b3;
+    }
+    .errorlist {
+        color: red;
+        list-style-type: none;
+        padding: 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Post a New Auction</h1>
+    <p>Fill in the details below to create a new auction.</p>
+    <form method="post" enctype="multipart/form-data" action="{% url 'post_auction' %}">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {{ form.as_p }}
+        {{ formset.management_form }}
+        {% for form in formset %}
+            {{ form.as_p }}
+        {% endfor %}
+        <button type="submit">Submit</button>
+    </form>
+    {% if errors %}
+        <ul class="errorlist">
+            {% for field, error in errors.items %}
+                <li>{{ field }}: {{ error|join:", " }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+{% endblock %}
