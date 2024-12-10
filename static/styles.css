@@ -87,7 +87,7 @@ a.btn:hover {
     max-width: 900px;
     margin: 20px auto;
     padding: 20px;
-    background-color: #f0f0f0; /* Light background color */
+    background-color: #f5f5dc; /* Beige background color */
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
 }
@@ -97,15 +97,8 @@ a.btn:hover {
     margin-bottom: 20px;
 }
 
-.profile-header img.profile-picture {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    margin-bottom: 10px;
-}
-
 .bio, .location, .birth-date {
-    color: blue; /* Blue text color for readability */
+    color: #000; /* Dark text color for better readability */
     margin-bottom: 10px;
 }
 
@@ -127,22 +120,34 @@ a.btn:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    color: #000; /* Ensure text color is readable */
 }
 
 .job-info {
     flex-grow: 1;
 }
 
-.job-title {
+.job-title, .bid-amount, .job-description {
     font-weight: bold;
     margin-bottom: 5px;
+    color: #000; /* Ensure text color is readable */
 }
 
 .job-actions a {
     margin-left: 10px;
+    color: #007bff; /* Link color */
+}
+
+.job-actions a:hover {
+    color: #0056b3; /* Hover link color */
 }
 
 .return-button {
     display: inline-block;
     margin-top: 20px;
+    color: #007bff; /* Button link color */
+}
+
+.return-button:hover {
+    color: #0056b3; /* Hover button link color */
 }
