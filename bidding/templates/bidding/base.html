@@ -2,10 +2,19 @@
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE|default:'en-us' }}" dir="{{ LANGUAGE_BIDI|yesno:'rtl,ltr,auto' }}">
 <head>
-    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static '16x16.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static '32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{% static '192x192.png' %}">
+    <link rel="icon" type="image/png" sizes="512x512" href="{% static '512x512.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'icon.png' %}">
+    <link rel="manifest" href="{% static 'site.webmanifest' %}">
+
     <title>{% block title %}{% endblock %}</title>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">  <!-- Ensure this line is included -->
     {% block stylesheet %}<link rel="stylesheet" href="{% static 'admin/css/base.css' %}">{% endblock %}
     {% block dark-mode-vars %}
         <link rel="stylesheet" href="{% static 'admin/css/dark_mode.css' %}">
