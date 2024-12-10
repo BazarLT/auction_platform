@@ -1,12 +1,9 @@
 /* styles.css */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    background-color: #f0f0f0; /* Light background color for simplicity */
     margin: 0;
     padding: 0;
-    background-image: url("{% static '192x192.png' %}");  /* Ensure this line points to the correct image */
-    background-size: cover;  /* Ensure the image covers the entire background */
-    background-position: center;  /* Center the image */
 }
 
 h1 {
@@ -83,4 +80,69 @@ a.btn {
 
 a.btn:hover {
     background-color: #0056b3;
+}
+
+/* Profile Page Styles */
+.profile-container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f0f0f0; /* Light background color */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-header img.profile-picture {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.bio, .location, .birth-date {
+    color: blue; /* Blue text color for readability */
+    margin-bottom: 10px;
+}
+
+.jobs-section h2, .bids-section h2 {
+    color: #333; /* Ensure section titles are readable */
+}
+
+.jobs-list, .bids-list {
+    list-style: none;
+    padding: 0;
+}
+
+.job-item, .bid-item {
+    background-color: #fff;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.job-info {
+    flex-grow: 1;
+}
+
+.job-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.job-actions a {
+    margin-left: 10px;
+}
+
+.return-button {
+    display: inline-block;
+    margin-top: 20px;
 }

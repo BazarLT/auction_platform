@@ -14,7 +14,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{% static 'styles.css' %}">  <!-- Ensure this line is included -->
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
     {% block stylesheet %}<link rel="stylesheet" href="{% static 'admin/css/base.css' %}">{% endblock %}
     {% block dark-mode-vars %}
         <link rel="stylesheet" href="{% static 'admin/css/dark_mode.css' %}">
@@ -65,6 +65,10 @@
     {% endif %}
 
     {% block content %}
+    <div class="container">
+        <h1>Welcome to the Auction Platform</h1>
+        <p>Sign in and start participating in auctions!</p>
+    </div>
     {% endblock %}
 </div>
 </body>
