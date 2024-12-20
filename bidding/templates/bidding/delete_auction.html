@@ -1,0 +1,63 @@
+{% extends "bidding/base.html" %}
+{% load static %}
+
+{% block title %}Delete Auction{% endblock %}
+
+{% block extrastyle %}
+<style>
+    .delete-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .delete-container h2 {
+        color: #333333;
+        margin-bottom: 20px;
+    }
+    .delete-container p {
+        color: #555555;
+        margin-bottom: 20px;
+    }
+    .delete-container form {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+    .delete-container .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+        color: white;
+    }
+    .btn-danger {
+        background-color: #dc3545;
+    }
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+    .btn-secondary {
+        background-color: #6c757d;
+    }
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="delete-container">
+    <h2>Delete Auction</h2>
+    <p>Are you sure you want to delete "{{ auction.title }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Yes, delete</button>
+        <a href="{% url 'auction_details' auction.id %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

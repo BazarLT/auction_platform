@@ -16,6 +16,7 @@
     }
     .auction-container h1 {
         margin-bottom: 20px;
+        color: #333;
     }
     .auction-container p {
         margin-bottom: 10px;
@@ -42,9 +43,17 @@
         border-radius: 5px;
         cursor: pointer;
         text-decoration: none;
+        margin-top: 20px;
+        display: inline-block;
     }
     .btn:hover {
         background-color: #0056b3;
+    }
+    .btn-danger {
+        background-color: #dc3545;
+    }
+    .btn-danger:hover {
+        background-color: #c82333;
     }
 </style>
 {% endblock %}
@@ -63,5 +72,7 @@
         {% endfor %}
     </div>
     <a href="{% url 'place_bid' auction.id %}" class="btn">Place a Bid</a>
+    <a href="{% url 'edit_auction' auction.id %}" class="btn btn-warning">Edit Auction</a>
+    <a href="{% url 'delete_auction' auction.id %}" class="btn btn-danger">Delete Auction</a>
 </div>
 {% endblock %}

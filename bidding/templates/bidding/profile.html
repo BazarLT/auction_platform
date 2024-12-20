@@ -26,10 +26,14 @@
         color: #666666;
         margin: 5px 0;
     }
-    .profile-picture {
+    .profile-pictures {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
         margin-bottom: 20px;
     }
-    .profile-picture img {
+    .profile-pictures img {
         width: 150px;
         height: 150px;
         border-radius: 50%;
@@ -40,26 +44,26 @@
         color: #444444;
         margin-bottom: 10px;
     }
-    .jobs-section, .bids-section {
+    .section-content {
         width: 100%;
         margin-bottom: 20px;
     }
-    .jobs-list, .bids-list {
+    .item-list {
         list-style: none;
         padding: 0;
     }
-    .job-item, .bid-item {
+    .item {
         background: #f8f8f8;
         padding: 10px;
         margin-bottom: 10px;
         border: 1px solid #dddddd;
         border-radius: 4px;
     }
-    .job-title, .bid-details {
+    .item-title, .item-details {
         color: #1a73e8;
         font-weight: bold;
     }
-    .job-description, .bid-details {
+    .item-description, .item-details {
         color: #555555;
     }
     .profile-actions {
@@ -79,60 +83,98 @@
     .profile-actions a:hover {
         background-color: #135ba1;
     }
+    .btn-warning {
+        background-color: #ffc107;
+    }
+    .btn-warning:hover {
+        background-color: #e0a800;
+    }
+    .btn-danger {
+        background-color: #dc3545;
+    }
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="profile-container">
     <div class="profile-header">
-        <h1>{{ user_profile.user.username }}</h1>
+        <h1>{{ user_profile.user.username }}{% if user_profile.verification_badge %} <i class="fas fa-check-circle"></i>{% endif %}</h1>
         <p class="bio">{{ user_profile.bio }}</p>
         <p class="location"><i class="fas fa-map-marker-alt"></i> {{ user_profile.location }}</p>
         <p class="birth-date"><i class="fas fa-birthday-cake"></i> {{ user_profile.birth_date }}</p>
+        <p class="rating">Rating: {{ user_profile.rating }} / 5</p>
     </div>
 
-    <div class="profile-picture">
-        {% if user_profile.profile_picture %}
-            <img src="{{ user_profile.profile_picture.url }}" alt="{{ user_profile.user.username }}'s Profile Picture">
-        {% endif %}
+    <div class="profile-pictures">
+        {% for picture in user_profile.images.all %}
+            <img src="{{ picture.image.url }}" alt="{{ user_profile.user.username }}'s Profile Picture">
+        {% endfor %}
     </div>
 
-    <div class="jobs-section">
-        <div class="section-title">Jobs Posted</div>
-        <ul class="jobs-list">
-            {% for job in jobs %}
-                <li class="job-item">
-                    <div class="job-title">{{ job.title }}</div>
-                    <div class="job-description">{{ job.description }}</div>
+    <div class="section-content">
+        <div class="section-title">Auctions</div>
+        <ul class="item-list">
+            {% for auction in auctions %}
+                <li class="item">
+                    <div class="item-title">{{ auction.title }}</div>
+                    <div class="item-description">{{ auction.description }}</div>
                     <div class="profile-actions">
-                        <a href="{% url 'edit_order' job.id %}" class="btn btn-warning btn-sm">Edit</a>
-                        <a href="{% url 'delete_order' job.id %}" class="btn btn-danger btn-sm">Delete</a>
+                        <a href="{% url 'edit_auction' auction.id %}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{% url 'delete_auction' auction.id %}" class="btn btn-danger btn-sm">Delete</a>
                     </div>
                 </li>
             {% empty %}
-                <li class="job-item">No jobs posted</li>
+                <li class="item">No auctions posted</li>
             {% endfor %}
         </ul>
     </div>
 
-    <div class="bids-section">
+    <div class="section-content">
         <div class="section-title">Bids Placed</div>
-        <ul class="bids-list">
+        <ul class="item-list">
             {% for bid in bids %}
-                <li class="bid-item">
-                    <div class="bid-details">
-                        Bid on <strong>{{ bid.auction.title }}</strong>
+                <li class="item">
+                    <div class="item-details">
+                        Bid on <strong>{{ bid.auction.title }}</strong> - {{ bid.bid_amount }} ({{ bid.role }})
                     </div>
-                    <div class="bid-amount">{{ bid.bid_amount }}</div>
                 </li>
             {% empty %}
-                <li class="bid-item">No bids placed</li>
+                <li class="item">No bids placed</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="section-content">
+        <div class="section-title">Watchlist</div>
+        <ul class="item-list">
+            {% for watch in watchlist %}
+                <li class="item">
+                    Watching: <strong>{{ watch.auction.title }}</strong>
+                </li>
+            {% empty %}
+                <li class="item">No items in watchlist</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="section-content">
+        <div class="section-title">Messages</div>
+        <ul class="item-list">
+            {% for message in messages %}
+                <li class="item">
+                    <strong>{{ message.sender.user.username }}</strong>: {{ message.content }}
+                </li>
+            {% empty %}
+                <li class="item">No messages</li>
             {% endfor %}
         </ul>
     </div>
 
     <div class="profile-actions">
-        <a href="{% url 'home' %}"><i class="fas fa-home"></i> Pagrindinis</a>
+        <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
         <a href="{% url 'edit_profile' user_profile.user.username %}">Edit Profile</a>
         <a href="{% url 'account_logout' %}">Logout</a>
     </div>

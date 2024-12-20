@@ -1,0 +1,59 @@
+{% extends "bidding/base.html" %}
+{% load static %}
+
+{% block title %}Edit Auction{% endblock %}
+
+{% block extrastyle %}
+<style>
+    .edit-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .edit-container h2 {
+        color: #333333;
+        margin-bottom: 20px;
+    }
+    .edit-container form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    .edit-container .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+        color: white;
+    }
+    .btn-primary {
+        background-color: #007bff;
+    }
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+    .btn-secondary {
+        background-color: #6c757d;
+    }
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="edit-container">
+    <h2>Edit Auction</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a href="{% url 'auction_details' auction.id %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

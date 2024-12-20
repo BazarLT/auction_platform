@@ -1,7 +1,7 @@
 {% extends "bidding/base.html" %}
 {% load static %}
 
-{% block title %}Post a New Order{% endblock %}
+{% block title %}Paskelbti Užsakymą{% endblock %}
 
 {% block extrastyle %}
 <style>
@@ -11,13 +11,19 @@
     }
     .container {
         max-width: 600px;
-        margin: 0 auto;
+        margin: 50px auto;
         background-color: rgba(255, 255, 255, 0.9);
         padding: 20px;
         border-radius: 10px;
         text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
     .container h1 {
+        margin-bottom: 20px;
+        color: #333;
+    }
+    .container p {
+        color: #666;
         margin-bottom: 20px;
     }
     .container form {
@@ -31,6 +37,8 @@
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 5px;
+        width: 100%;
+        box-sizing: border-box;
     }
     .container form button {
         padding: 10px;
@@ -51,18 +59,46 @@
 </style>
 {% endblock %}
 
+{% block header %}
+  <header id="header" role="banner">
+    <div id="branding">
+      {% block branding %}{% endblock %}
+    </div>
+    <nav role="navigation">
+        <ul>
+            <li><a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="{% url 'profile_view' user.username %}">Profile</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'account_logout' %}" class="btn">Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'account_login' %}" class="btn">Login</a></li>
+                <li><a href="{% url 'account_signup' %}" class="btn">Sign Up</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+  </header>
+{% endblock %}
+
 {% block content %}
 <div class="container">
-    <h1>{{ form_title }}</h1>
-    <p>{{ form_description }}</p>
+    <h1>Paskelbti Užsakymą</h1>
+    <p>Pasirinkite pasiūlymą su geriausiu kainos ir kokybės santykiu ir patvirtinkite užsakymą</p>
     <form method="post" enctype="multipart/form-data" action="{{ form_action }}">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ service_form.non_field_errors }}
+        {{ service_form.as_p }}
         {{ formset.management_form }}
         {% for form in formset %}
             {{ form.as_p }}
         {% endfor %}
-        <button type="submit">{{ form_button }}</button>
+        <button type="submit">Pateikti Užsakymą</button>
     </form>
+    {% if errors %}
+        <ul class="errorlist">
+            {% for field, error in errors.items %}
+                <li>{{ field }}: {{ error|join:", " }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 </div>
 {% endblock %}

@@ -14,6 +14,9 @@ class UserProfile(models.Model):
     birth_date = models.DateField(null=True, blank=True)
     phone_number = models.CharField(max_length=15, blank=True)
     email = models.EmailField(blank=True)
+    verification_badge = models.BooleanField(default=False)
+    payment_info = models.CharField(max_length=255, blank=True)
+    rating = models.DecimalField(max_digits=3, decimal_places=2, default=0.0)
 
     def __str__(self):
         return self.user.username
@@ -21,6 +24,9 @@ class UserProfile(models.Model):
 class UserProfileImage(models.Model):
     profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to='profile_pics/')
+
+    def __str__(self):
+        return self.profile.user.username
 
 class Auction(models.Model):
     title = models.CharField(max_length=200)
@@ -30,6 +36,8 @@ class Auction(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     end_date = models.DateTimeField()
     seller = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    winner_confirmed = models.BooleanField(default=False)
+    winner = models.ForeignKey(UserProfile, related_name='winning_auctions', null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.title
@@ -38,25 +46,19 @@ class AuctionImage(models.Model):
     auction = models.ForeignKey(Auction, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to='auction_images/')
 
+    def __str__(self):
+        return f"{self.auction.title} Image"
+
 class Bid(models.Model):
     auction = models.ForeignKey(Auction, on_delete=models.CASCADE)
     bidder = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     bid_amount = models.DecimalField(max_digits=10, decimal_places=2)
     bid_time = models.DateTimeField(auto_now_add=True)
-
+    BID_TYPES = [('Up', 'Up'), ('Down', 'Down')]
+    bid_type = models.CharField(max_length=10, choices=BID_TYPES, default='Up')
+    
     def __str__(self):
-        return f"{self.bidder.user.username} - {self.bid_amount}"
-
-class Job(models.Model):
-    title = models.CharField(max_length=200)
-    description = models.TextField()
-    start_price = models.DecimalField(max_digits=10, decimal_places=2)
-    end_date = models.DateTimeField()
-    poster = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    status = models.CharField(max_length=20, default='open')
-
-    def __str__(self):
-        return self.title
+        return f"{self.bidder.user.username} - {self.bid_amount} ({self.bid_type})"
 
 class ServiceRequest(models.Model):
     SERVICE_TYPES = (
@@ -76,13 +78,18 @@ class ServiceRequest(models.Model):
     def __str__(self):
         return f'{self.name} - {self.service_type}'
 
-class Order(models.Model):
-    name = models.CharField(max_length=255, default='Default Name')
-    description = models.TextField(default='Default Description')
-    address = models.CharField(max_length=255, default='Default Address')
-    image = models.ImageField(upload_to='orders/', blank=True, null=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    created_at = models.DateTimeField(auto_now_add=True)
+class Watchlist(models.Model):
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    auction = models.ForeignKey(Auction, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name
+        return f"{self.user.user.username} - {self.auction.title}"
+
+class Message(models.Model):
+    sender = models.ForeignKey(UserProfile, related_name='sent_messages', on_delete=models.CASCADE)
+    receiver = models.ForeignKey(UserProfile, related_name='received_messages', on_delete=models.CASCADE)
+    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"From {self.sender.user.username} to {self.receiver.user.username}"
