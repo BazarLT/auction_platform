@@ -58,11 +58,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware',  # Custom middleware for Allauth
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'auction_platform.urls'
-
 
 TEMPLATES = [
     {
@@ -75,12 +74,11 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.i18n',  # Ensure this line is included
+                'django.template.context_processors.i18n',
             ],
         },
     },
 ]
-
 
 WSGI_APPLICATION = 'auction_platform.wsgi.application'
 
@@ -89,7 +87,7 @@ WSGI_APPLICATION = 'auction_platform.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',  # Pointing to the centralized location
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -155,4 +153,3 @@ LOGGING = {
         'level': 'DEBUG',
     },
 }
-

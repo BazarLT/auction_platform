@@ -1,35 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Auction List</title>
-    {% load static %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
-</head>
-<body>
-    <h1>Auction List</h1>
-    
-    <button onclick="window.location.href='{% url 'home' %}'" class="btn btn-primary">
-        <i class="fas fa-home"></i> Pagrindinis
-    </button>
-    
-    <ul>
-        {% for auction in auctions %}
-        <li>
-            <h2>{{ auction.title }}</h2>
-            <p>Price: ${{ auction.price }}</p>
-            <p>{{ auction.description }}</p>
-            <p>End Date: {{ auction.end_date }}</p>
-            <p>Seller: {{ auction.seller.user.username }}</p>
-            {% if auction.image %}
-                <img src="{{ auction.image.url }}" alt="{{ auction.title }} Image" style="width:200px;height:auto;">
-            {% endif %}
-            <button onclick="location.href='{% url 'place_bid' auction.id %}'">Bid Now</button>
-            <button onclick="location.href='{% url 'auction_details' auction.id %}'">View Details</button>
-            <button onclick="alert('Share functionality coming soon!')">Share</button>
-        </li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
+{% extends "bidding/base.html" %}
+
+{% block title %}Užsakymų Sąrašas{% endblock %}
+
+{% block main_content %}
+<h2 class="text-center">Užsakymai</h2>
+<div class="auction-list">
+    {% for auction in auctions %}
+        <div class="card auction-item">
+            <img src="{{ auction.image.url }}" class="card-img-top" alt="{{ auction.title }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ auction.title }}</h5>
+                <p class="card-text">Esamas Bid: {{ auction.current_bid }}</p>
+                <a href="{% url 'auction_details' auction.id %}" class="btn btn-primary">Peržiūrėti Užsakymą</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<style>
+    .auction-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+    .auction-item {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    .auction-item img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 4px;
+    }
+    .auction-item h5 {
+        margin-top: 10px;
+        font-size: 1.2rem;
+    }
+    .auction-item p {
+        margin-top: 10px;
+        color: #888;
+    }
+    .btn-primary {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        margin-top: 10px;
+    }
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+</style>
+{% endblock %}

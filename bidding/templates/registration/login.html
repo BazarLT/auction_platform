@@ -1,24 +1,24 @@
 <!DOCTYPE html>
-<html lang="lt">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Prisijungti</title>
+    <title>Login</title>
     {% load static %}
     <style>
         body {
-            background-image: url("{% static 'hammer.jpg' %}");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
         }
         .container {
             max-width: 400px;
             margin: 0 auto;
-            background-color: rgba(255, 255, 255, 0.8);
             padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
             border-radius: 10px;
             text-align: center;
+            margin-top: 50px;
         }
         .container h1 {
             margin-bottom: 20px;
@@ -44,9 +44,10 @@
         .container form button:hover {
             background-color: #0056b3;
         }
-        .errornote {
+        .errorlist {
             color: red;
-            margin-bottom: 10px;
+            list-style-type: none;
+            padding: 0;
         }
     </style>
 </head>
@@ -54,9 +55,16 @@
     <div class="container">
         <h1>Prisijungti</h1>
         {% if form.errors %}
-            <p class="errornote">
-                Prašome ištaisyti klaidas žemiau.
-            </p>
+            <ul class="errorlist">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
         {% endif %}
         <form method="post">
             {% csrf_token %}
@@ -67,7 +75,7 @@
             <input type="hidden" name="next" value="{{ next }}">
             <button type="submit">Prisijungti</button>
         </form>
-        <p>Neturite paskyros? <a href="{% url 'register_view' %}">Registruotis</a></p>
+        <p>Neturite paskyros? <a href="{% url 'register' %}">Registruotis</a></p> <!-- Ensure this matches the new function name -->
     </div>
 </body>
 </html>

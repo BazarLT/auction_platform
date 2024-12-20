@@ -16,26 +16,20 @@
     <link rel="apple-touch-icon" href="{% static 'icon.png' %}">
     <link rel="manifest" href="{% static 'site.webmanifest' %}">
 
-    <title>{% block title %}{% endblock %}</title>
+    <title>{% block title %}Auction Platform{% endblock %}</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'styles.css' %}">
-    {% block stylesheet %}<link rel="stylesheet" href="{% static 'admin/css/base.css' %}">{% endblock %}
-    {% block dark-mode-vars %}
-        <link rel="stylesheet" href="{% static 'admin/css/dark_mode.css' %}">
-        <script src="{% static 'admin/js/theme.js' %}"></script>
-    {% endblock %}
-    {% if not is_popup and is_nav_sidebar_enabled %}
-        <link rel="stylesheet" href="{% static 'admin/css/nav_sidebar.css' %}">
-        <script src="{% static 'admin/js/nav_sidebar.js' %}" defer></script>
-    {% endif %}
+    {% block stylesheet %}{% endblock %}
     {% block extrastyle %}
     <style>
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background-color: #333;
+            padding: 10px 20px;
         }
         nav ul {
             display: flex;
@@ -47,10 +41,11 @@
             margin-left: 20px;
         }
         nav ul li a {
-            color: #007bff !important;
+            color: #000000 !important;
+            text-decoration: none;
         }
         nav ul li a:hover {
-            color: #0056b3 !important;
+            color: #333333 !important;
         }
         .header-right {
             display: flex;
@@ -73,7 +68,7 @@
     </style>
     {% endblock %}
     {% if LANGUAGE_BIDI %}
-        <link rel="stylesheet" href="{% block stylesheet_rtl %}<link rel="stylesheet" href="{% static 'admin/css/rtl.css' %}">{% endblock %}">
+        <link rel="stylesheet" href="{% static 'admin/css/rtl.css' %}">
     {% endif %}
     {% block extrahead %}{% endblock %}
     {% block responsive %}
@@ -85,7 +80,6 @@
     {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE">{% endblock %}
 </head>
 <body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}" data-admin-utc-offset="{% now 'Z' %}">
-<a href="#content-start" class="skip-to-content-link">{% translate 'Skip to main content' %}</a>
 <!-- Container -->
 <div id="container">
     {% if not is_popup %}
@@ -97,15 +91,16 @@
         </div>
         <nav role="navigation">
             <ul>
-                <li><a href="{% url 'home' %}"><i class="fas fa-home"></i> Pagrindinis</a></li>
-            </ul>
-            <ul class="header-right">
+                <li><a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="{% url 'auction_list' %}">Auctions</a></li>
+                <li><a href="{% url 'post_auction' %}">Post Auction</a></li>
+                <li><a href="{% url 'profile_view' user.username %}">Profile</a></li>
                 {% if user.is_authenticated %}
-                    <li>Welcome, {{ user.username }}!</li>
+                    <li class="header-right">Welcome, {{ user.username }}!</li>
                     <li><a href="{% url 'account_logout' %}" class="btn">Logout</a></li>
                 {% else %}
-                    <li><a href="{% url 'account_login' %}" class="btn">Login</a></li>
-                    <li><a href="{% url 'account_signup' %}" class="btn">Sign Up</a></li>
+                    <li class="header-right"><a href="{% url 'account_login' %}" class="btn">Login</a></li>
+                    <li class="header-right"><a href="{% url 'account_signup' %}" class="btn">Sign Up</a></li>
                 {% endif %}
             </ul>
         </nav>
@@ -115,8 +110,7 @@
 
     {% block content %}
     <main id="content-start" role="main" class="container">
-        <h1>Welcome to the Auction Platform</h1>
-        <p>Sign in and start participating in auctions!</p>
+        {% block main_content %}{% endblock %}
     </main>
     {% endblock %}
 </div>

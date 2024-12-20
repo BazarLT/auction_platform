@@ -1,0 +1,16 @@
+{% extends "bidding/base.html" %}
+{% load static %}
+
+{% block title %}Confirm Winner{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Confirm Winner</h1>
+    <p>Are you sure you want to confirm the winner of the auction for "{{ auction.title }}"?</p>
+    <p>This will deduct 1% of the auction price as a fee.</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Confirm</button>
+    </form>
+</div>
+{% endblock %}
