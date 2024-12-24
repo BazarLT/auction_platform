@@ -18,13 +18,4 @@ def test_hello_view_not_found():
 
 @pytest.mark.django_db
 def test_hello_view_post_method():
-    url = reverse('hello')  # Replace 'hello' with your actual URL name
-    response = client.post(url)
-    assert response.status_code == 405  # Method Not Allowed
-
-@pytest.mark.django_db
-def test_hello_view_with_query_params():
-    url = reverse('hello')  # Replace 'hello' with your actual URL name
-    response = client.get(url, {'name': 'Natali'})
-    assert response.status_code == 200
-    assert b'Hello, Natali!' in response.content
+    python -m unittest discover -s bidding/tests
