@@ -18,4 +18,6 @@ def test_hello_view_not_found():
 
 @pytest.mark.django_db
 def test_hello_view_post_method():
-    python -m unittest discover -s bidding/tests
+    url = reverse('hello')  # Replace 'hello' with your actual URL name
+    response = client.post(url)
+    assert response.status_code == 405  # Assuming POST is not allowed and should return 405 Method Not Allowed
