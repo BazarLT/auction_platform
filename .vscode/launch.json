@@ -3,7 +3,7 @@
     "configurations": [
         
         {
-            "name": "Python Debugger: Current File",
+               pip install pytest-django         "name": "Python Debugger: Current File",
             "type": "debugpy",
             "request": "launch",
             "program": "${file}",
