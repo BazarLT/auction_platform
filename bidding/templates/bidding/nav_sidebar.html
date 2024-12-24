@@ -15,8 +15,8 @@
         <li><a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a></li>
         <li><a href="{% url 'auction_list' %}">Auctions</a></li>
         <li><a href="{% url 'post_auction' %}">Post Auction</a></li>
-        <li><a href="{% url 'profile_view' user.username %}">Profile</a></li>
         {% if user.is_authenticated %}
+            <li><a href="{% url 'profile_view' user.username %}">Profile</a></li>
             <li class="header-right">Welcome, {{ user.username }}!</li>
             <li><a href="{% url 'account_logout' %}" class="btn">Logout</a></li>
         {% else %}
@@ -46,7 +46,7 @@
             <ul class="actionlist">
             {% for entry in admin_log %}
             <li class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}">
-                <span class="visually-hidden">{% if entry.is_addition %}{% translate 'Added:' %}{% elif entry.is_change %}{% translate 'Changed:' %}{% elif entry.is_deletion %}{% translate 'Deleted:' %}{% endif %}</span>
+                <span class="visually-hidden">{% if entry.is_addition %}{% translate 'Added:' %}{% elif entry.is_change %}{% translate 'Changed:' %}{% elif entry.is_deletion %}{% translate 'Deleted:' %}</span>
                 {% if entry.is_deletion or not entry.get_admin_url %}
                     {{ entry.object_repr }}
                 {% else %}

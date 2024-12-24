@@ -95,6 +95,18 @@
         .info-section ul li {
             margin-bottom: 10px;
         }
+        .btn-donation {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .btn-donation:hover {
+            background-color: #218838;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
@@ -114,6 +126,7 @@
     <div class="jumbotron">
         <h1>Sveiki atvykę į Aukciono Platformą</h1>
         <p>Prisijunkite ir pradėkite dalyvauti aukcionuose!</p>
+        <a href="{% url 'donation_page' %}" class="btn-donation">Lėšų Rinkimo Akcija</a>
     </div>
     
     <div class="info-section">

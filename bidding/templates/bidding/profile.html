@@ -1,7 +1,7 @@
 {% extends "bidding/base.html" %}
 {% load static %}
 
-{% block title %}Profile - {{ user_profile.user.username }}{% endblock %}
+{% block title %}Profilis - {{ user_profile.user.username }}{% endblock %}
 
 {% block extrastyle %}
 <style>
@@ -58,6 +58,9 @@
         margin-bottom: 10px;
         border: 1px solid #dddddd;
         border-radius: 4px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
     .item-title, .item-details {
         color: #1a73e8;
@@ -95,6 +98,16 @@
     .btn-danger:hover {
         background-color: #c82333;
     }
+    .btn-delete {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+    }
+    .btn-delete:hover {
+        background-color: #c82333;
+    }
 </style>
 {% endblock %}
 
@@ -105,7 +118,7 @@
         <p class="bio">{{ user_profile.bio }}</p>
         <p class="location"><i class="fas fa-map-marker-alt"></i> {{ user_profile.location }}</p>
         <p class="birth-date"><i class="fas fa-birthday-cake"></i> {{ user_profile.birth_date }}</p>
-        <p class="rating">Rating: {{ user_profile.rating }} / 5</p>
+        <p class="rating">Įvertinimas: {{ user_profile.rating }} / 5</p>
     </div>
 
     <div class="profile-pictures">
@@ -115,68 +128,88 @@
     </div>
 
     <div class="section-content">
-        <div class="section-title">Auctions</div>
+        <div class="section-title">Aukcionai</div>
         <ul class="item-list">
             {% for auction in auctions %}
                 <li class="item">
                     <div class="item-title">{{ auction.title }}</div>
                     <div class="item-description">{{ auction.description }}</div>
                     <div class="profile-actions">
-                        <a href="{% url 'edit_auction' auction.id %}" class="btn btn-warning btn-sm">Edit</a>
-                        <a href="{% url 'delete_auction' auction.id %}" class="btn btn-danger btn-sm">Delete</a>
+                        <a href="{% url 'edit_auction' auction.id %}" class="btn btn-warning btn-sm">Redaguoti</a>
+                        <a href="{% url 'delete_auction' auction.id %}" class="btn btn-danger btn-sm">Ištrinti</a>
                     </div>
                 </li>
             {% empty %}
-                <li class="item">No auctions posted</li>
+                <li class="item">Aukcionų nėra</li>
             {% endfor %}
         </ul>
     </div>
 
     <div class="section-content">
-        <div class="section-title">Bids Placed</div>
+        <div class="section-title">Pateikti Statymai</div>
         <ul class="item-list">
             {% for bid in bids %}
                 <li class="item">
                     <div class="item-details">
-                        Bid on <strong>{{ bid.auction.title }}</strong> - {{ bid.bid_amount }} ({{ bid.role }})
+                        Statymas dėl <strong>{{ bid.auction.title }}</strong> - {{ bid.bid_amount }} ({{ bid.role }})
                     </div>
                 </li>
             {% empty %}
-                <li class="item">No bids placed</li>
+                <li class="item">Statymų nėra</li>
             {% endfor %}
         </ul>
     </div>
 
     <div class="section-content">
-        <div class="section-title">Watchlist</div>
+        <div class="section-title">Stebimų Aukcionų Sąrašas</div>
         <ul class="item-list">
             {% for watch in watchlist %}
                 <li class="item">
-                    Watching: <strong>{{ watch.auction.title }}</strong>
+                    Stebimas aukcionas: <strong>{{ watch.auction.title }}</strong>
                 </li>
             {% empty %}
-                <li class="item">No items in watchlist</li>
+                <li class="item">Stebimų aukcionų nėra</li>
             {% endfor %}
         </ul>
     </div>
 
     <div class="section-content">
-        <div class="section-title">Messages</div>
+        <div class="section-title">Žinutės</div>
         <ul class="item-list">
             {% for message in messages %}
                 <li class="item">
                     <strong>{{ message.sender.user.username }}</strong>: {{ message.content }}
+                    <div class="profile-actions">
+                        <a href="{% url 'send_message' message.sender.id %}" class="btn btn-primary btn-sm">Atsakyti</a>
+                        <form method="post" action="{% url 'delete_message' message.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-delete">Ištrinti</button>
+                        </form>
+                    </div>
                 </li>
             {% empty %}
-                <li class="item">No messages</li>
+                <li class="item">Žinučių nėra</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="section-content">
+        <div class="section-title">Pranešimai</div>
+        <ul class="item-list">
+            {% for notification in notifications %}
+                <li class="item">
+                    <strong>{{ notification.timestamp }}</strong>: {{ notification.message }}
+                </li>
+            {% empty %}
+                <li class="item">Pranešimų nėra</li>
             {% endfor %}
         </ul>
     </div>
 
     <div class="profile-actions">
-        <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
-        <a href="{% url 'edit_profile' user_profile.user.username %}">Edit Profile</a>
-        <a href="{% url 'account_logout' %}">Logout</a>
+        <a href="{% url 'home' %}"><i class="fas fa-home"></i> Pradžia</a>
+        <a href="{% url 'edit_profile' user_profile.user.username %}">Redaguoti Profilį</a>
+        <a href="{% url 'account_logout' %}">Atsijungti</a>
     </div>
 </div>
 {% endblock %}
