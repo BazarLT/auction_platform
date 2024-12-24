@@ -1,7 +1,7 @@
 {% extends "bidding/base.html" %}
 {% load static %}
 
-{% block title %}Auction Details - {{ auction.title }}{% endblock %}
+{% block title %}Aukciono Detalės - {{ auction.title }}{% endblock %}
 
 {% block extrastyle %}
 <style>
@@ -62,17 +62,24 @@
 <div class="auction-container">
     <h1>{{ auction.title }}</h1>
     <p>{{ auction.description }}</p>
-    <p>Starting Bid: ${{ auction.starting_bid }}</p>
-    <p>Current Bid: ${{ auction.current_bid }}</p>
-    <p>End Date: {{ auction.end_date }}</p>
-    <h3>Images:</h3>
+    <p>Pradinė kaina: ${{ auction.starting_bid }}</p>
+    <p>Dabartinė kaina: ${{ auction.current_bid }}</p>
+    <p>Pabaigos data: {{ auction.end_date }}</p>
+    <h3>Nuotraukos:</h3>
     <div class="auction-images">
         {% for image in auction.images.all %}
             <img src="{{ image.image.url }}" alt="{{ auction.title }} Image">
         {% endfor %}
     </div>
-    <a href="{% url 'place_bid' auction.id %}" class="btn">Place a Bid</a>
-    <a href="{% url 'edit_auction' auction.id %}" class="btn btn-warning">Edit Auction</a>
-    <a href="{% url 'delete_auction' auction.id %}" class="btn btn-danger">Delete Auction</a>
+    <p><strong>Pastaba:</strong> Aukciono laimėtojas turės sumokėti 2% mokestį nuo galutinės kainos.</p>
+    <a href="{% url 'place_bid' auction.id %}" class="btn">Pateikti Statymą</a>
+    <a href="{% url 'edit_auction' auction.id %}" class="btn btn-warning">Redaguoti Aukcioną</a>
+    <a href="{% url 'delete_auction' auction.id %}" class="btn btn-danger">Ištrinti Aukcioną</a>
+    {% if auction.end_date < timezone.now and not auction.winner_confirmed and request.user.userprofile == auction.seller %}
+        <a href="{% url 'confirm_winner' auction.id %}" class="btn btn-success">Patvirtinti Nugalėtoją</a>
+    {% endif %}
+    {% if request.user.is_authenticated %}
+        <a href="{% url 'start_chat' auction.id %}" class="btn btn-primary">Pradėti gyvą pokalbį</a>
+    {% endif %}
 </div>
 {% endblock %}

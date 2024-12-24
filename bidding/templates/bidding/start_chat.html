@@ -1,0 +1,15 @@
+{% extends "bidding/base.html" %}
+{% load static %}
+
+{% block title %}Pradėti Pokalbį{% endblock %}
+
+{% block content %}
+<div class="start-chat-container">
+    <h2>Pradėti Pokalbį su {{ seller_profile.user.username }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Siųsti Žinutę</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,14 +1,81 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
-from .models import Auction, ServiceRequest, UserProfile, UserProfileImage, AuctionImage, Bid, Watchlist, Message
-from .forms import ServiceRequestForm, BidForm, UserRegistrationForm, UserProfileForm, UserProfileImageFormSet, AuctionForm, AuctionImageFormSet
+from django.contrib.auth import login, authenticate
+from django.contrib import messages
+from django.urls import reverse
+from django.utils import timezone
 from datetime import timedelta
 from django.core.mail import send_mail
-from django.utils import timezone
-from django.urls import reverse
-from .utils import send_outbid_notification
+from .models import Auction, ServiceRequest, UserProfile, UserProfileImage, AuctionImage, Bid, Watchlist, Message, Notification
+from .forms import ServiceRequestForm, BidForm, UserRegistrationForm, UserProfileForm, UserProfileImageFormSet, AuctionForm, AuctionImageFormSet, MessageForm
+from .utils import send_outbid_notification, send_payment_confirmation, process_fee_payment, send_confirmation_notification
 import smtplib
+
+def register(request):
+    if request.method == 'POST':
+        user_form = UserRegistrationForm(request.POST)
+        profile_form = UserProfileForm(request.POST, request.FILES)
+        image_formset = UserProfileImageFormSet(request.POST, request.FILES)
+        if user_form.is_valid() and profile_form.is_valid() and image_formset.is_valid():
+            user = user_form.save()
+            profile = profile_form.save(commit=False)
+            profile.user = user
+            profile.save()
+            image_formset.instance = profile
+            image_formset.save()
+            user = authenticate(username=user_form.cleaned_data['username'], password=user_form.cleaned_data['password'])
+            login(request, user)
+            return redirect('home')
+    else:
+        user_form = UserRegistrationForm()
+        profile_form = UserProfileForm()
+        image_formset = UserProfileImageFormSet()
+    return render(request, 'bidding/register.html', {'user_form': user_form, 'profile_form': profile_form, 'image_formset': image_formset})
+
+# Add other views here like start_chat, view_notifications, etc.
+
+
+def donation_page(request):
+    return render(request, 'bidding/donation.html')
+
+@login_required
+def start_chat(request, auction_id):
+    auction = get_object_or_404(Auction, id=auction_id)
+    seller_profile = auction.seller
+    buyer_profile = request.user.userprofile
+
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.sender = buyer_profile
+            message.receiver = seller_profile
+            message.save()
+            messages.success(request, 'Message sent to the seller!')
+            return redirect('auction_details', auction_id=auction.id)
+    else:
+        form = MessageForm()
+
+    return render(request, 'bidding/start_chat.html', {
+        'form': form,
+        'auction': auction,
+        'seller_profile': seller_profile,
+        'buyer_profile': buyer_profile,
+    })
+
+
+@login_required
+def confirm_payment(request, auction_id):
+    auction = get_object_or_404(Auction, id=auction_id)
+    if request.method == 'POST':
+        auction.payment_confirmed = True
+        auction.save()
+
+        send_payment_confirmation(request.user, auction)
+
+        messages.success(request, 'Payment confirmed. Thank you!')
+        return redirect('profile_view', username=request.user.username)
+    return render(request, 'bidding/confirm_payment.html', {'auction': auction})
 
 @login_required
 def profile_view(request, username):
@@ -16,14 +83,17 @@ def profile_view(request, username):
     bids = Bid.objects.filter(bidder=user_profile)
     watchlist = Watchlist.objects.filter(user=user_profile)
     messages = Message.objects.filter(receiver=user_profile)
+    notifications = Notification.objects.filter(user=user_profile).order_by('-timestamp')
     auctions = Auction.objects.filter(seller=user_profile)
     return render(request, 'bidding/profile.html', {
         'user_profile': user_profile,
         'bids': bids,
         'watchlist': watchlist,
         'messages': messages,
+        'notifications': notifications,
         'auctions': auctions,
     })
+
 
 @login_required
 def edit_profile(request, username):
@@ -43,7 +113,6 @@ def edit_profile(request, username):
         'formset': formset,
         'user_profile': user_profile,
     })
-
 def user_list(request):
     users = User.objects.all()
     return render(request, 'user_list.html', {'users': users})
@@ -75,48 +144,59 @@ def place_bid_view(request, auction_id):
             user_profile, created = UserProfile.objects.get_or_create(user=request.user)
             bid.bidder = user_profile
             bid.save()
-            
+
+            # Create a notification for the previous bidder
             if bid_type == 'Up' and (previous_bid is None or bid_amount > previous_bid.bid_amount):
                 auction.current_bid = bid_amount
                 auction.save()
                 if previous_bid:
-                    send_outbid_notification(previous_bid)
-                return redirect('auction_details', auction_id=auction.id)
+                    Notification.objects.create(
+                        user=previous_bid.bidder,
+                        message=f"Your bid has been outbid on auction: {auction.title}"
+                    )
             elif bid_type == 'Down' and (previous_bid is None or bid_amount < previous_bid.bid_amount):
                 auction.current_bid = bid_amount
                 auction.save()
                 if previous_bid:
-                    send_outbid_notification(previous_bid)
-                return redirect('auction_details', auction_id=auction.id)
-            else:
-                form.add_error('bid_amount', 'Bid amount does not meet the criteria for the selected bid type.')
+                    Notification.objects.create(
+                        user=previous_bid.bidder,
+                        message=f"Your bid has been outbid on auction: {auction.title}"
+                    )
+            return redirect('auction_details', auction_id=auction.id)
+        else:
+            form.add_error('bid_amount', 'Bid amount does not meet the criteria for the selected bid type.')
     else:
         form = BidForm()
     return render(request, 'bidding/place_bid.html', {'form': form, 'auction': auction})
 
-def register(request):
+
+# Similarly, update the views for auction end and win confirmation
+@login_required
+def confirm_auction_winner(request, auction_id):
+    auction = get_object_or_404(Auction, id=auction_id)
+    if auction.seller != request.user.userprofile:
+        messages.error(request, 'You are not authorized to confirm this auction.')
+        return redirect('auction_details', auction_id=auction.id)
+    
     if request.method == 'POST':
-        user_form = UserRegistrationForm(request.POST)
-        profile_form = UserProfileForm(request.POST, request.FILES)
-        image_formset = UserProfileImageFormSet(request.POST, request.FILES)
-        if user_form.is_valid() and profile_form.is_valid() and image_formset.is_valid():
-            user = user_form.save()
-            profile = profile_form.save(commit=False)
-            profile.user = user
-            profile.save()
-            image_formset.instance = profile
-            image_formset.save()
-            user = authenticate(username=user_form.cleaned_data['username'], password=user_form.cleaned_data['password'])
-            login(request, user)
-            return redirect('home')
-    else:
-        user_form = UserRegistrationForm()
-        profile_form = UserProfileForm()
-        image_formset = UserProfileImageFormSet()
-    return render(request, 'bidding/register.html', {'user_form': user_form, 'profile_form': profile_form, 'image_formset': image_formset})
+        winning_bid = Bid.objects.filter(auction=auction).order_by('-bid_time').first()
+        if winning_bid:
+            auction.winner = winning_bid.bidder
+            auction.winner_confirmed = True
+            auction.save()
+            Notification.objects.create(
+                user=winning_bid.bidder,
+                message=f"Congratulations! You have won the auction: {auction.title}"
+            )
+            messages.success(request, 'Auction winner confirmed.')
+            return redirect('auction_details', auction_id=auction.id)
+    return render(request, 'bidding/confirm_auction_winner.html', {'auction': auction})
+
 
 @login_required
 def post_auction(request):
+    errors = None
+    
     if request.method == 'POST':
         service_form = ServiceRequestForm(request.POST)
         formset = AuctionImageFormSet(request.POST, request.FILES)
@@ -163,7 +243,7 @@ def post_auction(request):
         'form_description': 'Please fill out the form to post your service request auction.',
         'form_action': reverse('post_auction'),
         'form_button': 'Submit',
-        'errors': errors if 'errors' in locals() else None,
+        'errors': errors,
     })
 
 @login_required
@@ -173,18 +253,51 @@ def auction_post_success(request):
 @login_required
 def edit_auction(request, auction_id):
     auction = get_object_or_404(Auction, id=auction_id)
+
+    # Debug: Print seller and current user info
+    print("Auction Seller:", auction.seller)
+    print("Current User Profile:", request.user.userprofile)
+    print("Current User:", request.user)
+
+    if auction.seller != request.user.userprofile:
+        messages.error(request, 'You are not authorized to edit this auction.')
+        print("User is not authorized to edit this auction.")  # Debug: Print debug message
+        return redirect('auction_details', auction_id=auction.id)
+    else:
+        print("User is authorized to edit this auction.")  # Debug: Print debug message
+
     if request.method == 'POST':
         form = AuctionForm(request.POST, request.FILES, instance=auction)
-        if form.is_valid():
+        formset = AuctionImageFormSet(request.POST, request.FILES, instance=auction)
+        if form.is_valid() and formset.is_valid():
             form.save()
+            instances = formset.save(commit=False)
+            for instance in instances:
+                instance.auction = auction
+                instance.save()
+            formset.save_m2m()
+            messages.success(request, 'Auction updated successfully.')
             return redirect('auction_details', auction_id=auction.id)
+        else:
+            messages.error(request, 'There was an error updating the auction. Please check the form and try again.')
+            print("Form Errors:", form.errors)  # Debug: Print form errors
+            print("Formset Errors:", formset.errors)  # Debug: Print formset errors
     else:
         form = AuctionForm(instance=auction)
-    return render(request, 'bidding/edit_auction.html', {'form': form, 'auction': auction})
+        formset = AuctionImageFormSet(instance=auction)
+    return render(request, 'bidding/edit_auction.html', {
+        'form': form,
+        'formset': formset,
+        'auction': auction,
+    })
 
 @login_required
 def delete_auction(request, auction_id):
     auction = get_object_or_404(Auction, id=auction_id)
+    if auction.seller.user != request.user:
+        messages.error(request, 'You are not authorized to delete this auction.')
+        return redirect('auction_details', auction_id=auction.id)
+
     if request.method == 'POST':
         auction.delete()
         return redirect('profile_view', username=request.user.username)
@@ -211,6 +324,19 @@ def remove_from_watchlist(request, auction_id):
     return redirect('watchlist_view')
 
 @login_required
+def view_notifications(request):
+    notifications = Notification.objects.filter(user=request.user.userprofile).order_by('-timestamp')
+    return render(request, 'bidding/notifications.html', {'notifications': notifications})
+
+@login_required
+def mark_as_read(request, notification_id):
+    notification = get_object_or_404(Notification, id=notification_id, user=request.user.userprofile)
+    notification.is_read = True
+    notification.save()
+    messages.success(request, 'Notification marked as read.')
+    return redirect('view_notifications')
+
+@login_required
 def send_message(request, receiver_id):
     receiver = get_object_or_404(UserProfile, id=receiver_id)
     if request.method == 'POST':
@@ -229,24 +355,12 @@ def view_messages(request):
         'received_messages': received_messages,
         'sent_messages': sent_messages,
     })
+
 @login_required
-def confirm_winner(request, auction_id):
-    auction = get_object_or_404(Auction, id=auction_id)
+def delete_message(request, message_id):
+    message = get_object_or_404(Message, id=message_id)
     if request.method == 'POST':
-        # Calculate the fee (2% of the auction price)
-        fee = auction.current_bid * 0.02
-
-        # Process the fee payment
-        process_fee_payment(fee, auction.seller)
-
-        # Update the auction to set winner confirmed
-        auction.winner_confirmed = True
-        auction.save()
-
-        # Send confirmation notification (email or message)
-        send_confirmation_notification(request.user, auction)
-
-        # Redirect to a success page or profile
+        message.delete()
         return redirect('profile_view', username=request.user.username)
-    return render(request, 'bidding/confirm_winner.html', {'auction': auction})
+    return redirect('profile_view', username=request.user.username)
 

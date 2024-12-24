@@ -94,8 +94,8 @@
                 <li><a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a></li>
                 <li><a href="{% url 'auction_list' %}">Auctions</a></li>
                 <li><a href="{% url 'post_auction' %}">Post Auction</a></li>
-                <li><a href="{% url 'profile_view' user.username %}">Profile</a></li>
                 {% if user.is_authenticated %}
+                    <li><a href="{% url 'profile_view' user.username %}">Profile</a></li>
                     <li class="header-right">Welcome, {{ user.username }}!</li>
                     <li><a href="{% url 'account_logout' %}" class="btn">Logout</a></li>
                 {% else %}

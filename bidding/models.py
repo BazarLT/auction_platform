@@ -62,9 +62,16 @@ class Bid(models.Model):
 
 class ServiceRequest(models.Model):
     SERVICE_TYPES = (
-        ('electrician', 'Elektriker'),
-        ('plumber', 'Sanitärinstallateur'),
-        ('carpenter', 'Zimmerer'),
+        ('mūrininkas', 'Mūrininkas'),
+        ('elektrikas', 'Elektrikas'),
+        ('darbininkas', 'Darbininkas'),
+        ('dažytojas_dekoratorius', 'Dažytojas Dekoratorius'),
+        ('santechnikas', 'Santechnikas'),
+        ('mechanikas', 'Mechanikas'),
+        ('buhalterinė_apskaita', 'Buhalterinė Apskaita'),
+        ('IT_programuotojas', 'IT Programuotojas'),
+        ('technikas', 'Technikas'),
+        ('kitos_uzduotys', 'Kitos Užduotys'),
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     service_type = models.CharField(max_length=50, choices=SERVICE_TYPES)
@@ -93,3 +100,12 @@ class Message(models.Model):
 
     def __str__(self):
         return f"From {self.sender.user.username} to {self.receiver.user.username}"
+
+class Notification(models.Model):
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    message = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Notification for {self.user.user.username} - {self.message}"
