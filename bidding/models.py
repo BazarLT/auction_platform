@@ -56,7 +56,7 @@ class Bid(models.Model):
     bid_time = models.DateTimeField(auto_now_add=True)
     BID_TYPES = [('Up', 'Up'), ('Down', 'Down')]
     bid_type = models.CharField(max_length=10, choices=BID_TYPES, default='Up')
-    
+
     def __str__(self):
         return f"{self.bidder.user.username} - {self.bid_amount} ({self.bid_type})"
 

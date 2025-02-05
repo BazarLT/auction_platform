@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.models import User
 from django.contrib import messages
 from django.urls import reverse
 from django.utils import timezone
@@ -177,7 +178,7 @@ def confirm_auction_winner(request, auction_id):
     if auction.seller != request.user.userprofile:
         messages.error(request, 'You are not authorized to confirm this auction.')
         return redirect('auction_details', auction_id=auction.id)
-    
+
     if request.method == 'POST':
         winning_bid = Bid.objects.filter(auction=auction).order_by('-bid_time').first()
         if winning_bid:
@@ -196,7 +197,7 @@ def confirm_auction_winner(request, auction_id):
 @login_required
 def post_auction(request):
     errors = None
-    
+
     if request.method == 'POST':
         service_form = ServiceRequestForm(request.POST)
         formset = AuctionImageFormSet(request.POST, request.FILES)

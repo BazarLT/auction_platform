@@ -1,14 +1,10 @@
 {% extends "bidding/base.html" %}
 {% load static %}
 
-{% block title %}Paskelbti Užsakymą{% endblock %}
+{% block title %}Paskelbti užsakymą{% endblock %}
 
 {% block extrastyle %}
 <style>
-    body {
-        background-color: #f0f0f0;
-        font-family: Arial, sans-serif;
-    }
     .container {
         max-width: 600px;
         margin: 50px auto;
@@ -59,30 +55,10 @@
 </style>
 {% endblock %}
 
-{% block header %}
-  <header id="header" role="banner">
-    <div id="branding">
-      {% block branding %}{% endblock %}
-    </div>
-    <nav role="navigation">
-        <ul>
-            <li><a href="{% url 'home' %}"><i class="fas fa-home"></i> Pradžia</a></li>
-            <li><a href="{% url 'profile_view' user.username %}">Profilis</a></li>
-            {% if user.is_authenticated %}
-                <li><a href="{% url 'account_logout' %}" class="btn">Atsijungti</a></li>
-            {% else %}
-                <li><a href="{% url 'account_login' %}" class="btn">Prisijungti</a></li>
-                <li><a href="{% url 'account_signup' %}" class="btn">Registruotis</a></li>
-            {% endif %}
-        </ul>
-    </nav>
-  </header>
-{% endblock %}
-
 {% block content %}
 <div class="container">
     <h1>Paskelbti Užsakymą</h1>
-    <p>Pasirinkite pasiūlymą su geriausiu kainos ir kokybės santykiu ir patvirtinkite užsakymą</p>
+    <p>Aprašykite reikalingus atlikti darbus</p>
     <form method="post" enctype="multipart/form-data" action="{% url 'post_auction' %}">
         {% csrf_token %}
         {{ service_form.non_field_errors }}
