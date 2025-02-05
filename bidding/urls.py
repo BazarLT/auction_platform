@@ -13,7 +13,6 @@ urlpatterns = [
     path('post_auction/', views.post_auction, name='post_auction'),
     path('profile/<str:username>/', views.profile_view, name='profile_view'),
     path('profile/<str:username>/edit/', views.edit_profile, name='edit_profile'),
-    path('users/', views.user_list, name='user_list'),
     path('auction/<int:auction_id>/edit/', views.edit_auction, name='edit_auction'),
     path('auction/<int:auction_id>/delete/', views.delete_auction, name='delete_auction'),
     path('auction/<int:auction_id>/confirm_winner/', views.confirm_auction_winner, name='confirm_winner'),  # Added path for confirming winner

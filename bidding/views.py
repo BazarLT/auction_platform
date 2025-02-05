@@ -114,9 +114,6 @@ def edit_profile(request, username):
         'formset': formset,
         'user_profile': user_profile,
     })
-def user_list(request):
-    users = User.objects.all()
-    return render(request, 'user_list.html', {'users': users})
 
 def home(request):
     return render(request, 'bidding/home.html')
