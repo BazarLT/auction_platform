@@ -1,3 +1,4 @@
+import decimal
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -11,12 +12,11 @@ class UserProfile(models.Model):
     role = models.CharField(max_length=6, choices=USER_ROLES, default='guest')
     bio = models.TextField(blank=True)
     location = models.CharField(max_length=100, blank=True)
-    birth_date = models.DateField(null=True, blank=True)
     phone_number = models.CharField(max_length=15, blank=True)
     email = models.EmailField(blank=True)
     verification_badge = models.BooleanField(default=False)
     payment_info = models.CharField(max_length=255, blank=True)
-    rating = models.DecimalField(max_digits=3, decimal_places=2, default=0.0)
+    rating = models.DecimalField(max_digits=3, decimal_places=2, default=decimal.Decimal(0))
 
     def __str__(self):
         return self.user.username

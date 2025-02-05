@@ -65,7 +65,7 @@ class BidForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['phone_number', 'email', 'bio', 'location', 'birth_date']
+        fields = ['phone_number', 'email', 'bio', 'location']
 
     def __init__(self, *args, **kwargs):
         super(UserProfileForm, self).__init__(*args, **kwargs)
@@ -73,7 +73,6 @@ class UserProfileForm(forms.ModelForm):
         self.fields['email'].label = "El. paštas"
         self.fields['bio'].label = "Apie mane"
         self.fields['location'].label = "Vieta"
-        self.fields['birth_date'].label = "Gimimo data"
         for field in self.fields.values():
             field.widget.attrs.update({'class': 'form-control'})
 

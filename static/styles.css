@@ -191,7 +191,7 @@ button:hover {
     margin-bottom: 20px;
 }
 
-.bio, .location, .birth-date {
+.bio, .location {
     color: #000; /* Dark text color for better readability */
     margin-bottom: 10px;
 }
