@@ -35,19 +35,6 @@
         border-radius: 5px;
         border: 2px solid #ddd;
     }
-    .btn {
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        text-decoration: none;
-        margin-top: 20px;
-    }
-    .btn:hover {
-        background-color: #0056b3;
-    }
     .btn-danger {
         background-color: #dc3545;
     }
@@ -72,13 +59,13 @@
     </div>
     <p><strong>Pastaba:</strong> Aukciono laimėtojas turės sumokėti 2% mokestį nuo galutinės kainos.</p>
     {% if request.user.userprofile == auction.seller %}
-    <a href="{% url 'edit_auction' auction.id %}" class="btn btn-warning">Redaguoti Aukcioną</a>
+    <a href="{% url 'edit_auction' auction.id %}" class="btn btn-secondary">Redaguoti Aukcioną</a>
     <a href="{% url 'delete_auction' auction.id %}" class="btn btn-danger">Ištrinti Aukcioną</a>
     {% if auction.end_date < timezone.now and not auction.winner_confirmed %}
         <a href="{% url 'confirm_winner' auction.id %}" class="btn btn-success">Patvirtinti Nugalėtoją</a>
     {% endif %}
     {% else %}
-        <a href="{% url 'place_bid' auction.id %}" class="btn">Pateikti Statymą</a>
+        <a href="{% url 'place_bid' auction.id %}" class="btn btn-secondary">Pateikti Statymą</a>
         <a href="{% url 'start_chat' auction.id %}" class="btn btn-primary">Siųsti žinutę</a>
     {% endif %}
 </div>

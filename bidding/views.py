@@ -1,7 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.models import User
 from django.contrib import messages
 from django.urls import reverse
 from django.utils import timezone
@@ -165,6 +164,7 @@ def place_bid_view(request, auction_id):
             form.add_error('bid_amount', 'Bid amount does not meet the criteria for the selected bid type.')
     else:
         form = BidForm()
+        form.initial['bid_amount'] = auction.current_bid
     return render(request, 'bidding/place_bid.html', {'form': form, 'auction': auction})
 
 
