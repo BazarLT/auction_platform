@@ -51,7 +51,6 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
     <h1>Paskelbti Užsakymą</h1>
     <p>Aprašykite reikalingus atlikti darbus</p>
     <form method="post" enctype="multipart/form-data" action="{% url 'post_auction' %}">
@@ -71,5 +70,4 @@
             {% endfor %}
         </ul>
     {% endif %}
-</div>
 {% endblock %}

@@ -3,7 +3,7 @@
 
 {% block title %}Registruotis{% endblock %}
 
-{% block main_content %}
+{% block content %}
         <h1>Registruotis</h1>
         <form method="post" enctype="multipart/form-data" action="{% url 'register' %}"> <!-- Ensure this matches the new function name -->
             {% csrf_token %}
