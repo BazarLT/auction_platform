@@ -48,16 +48,16 @@
         </div>
         <nav role="navigation">
             <ul>
-                <li><a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="{% url 'auction_list' %}">Auctions</a></li>
-                <li><a href="{% url 'post_auction' %}">Post Auction</a></li>
+                <li><a href="{% url 'home' %}"><i class="fas fa-home"></i> Pagrindinis</a></li>
+                <li><a href="{% url 'auction_list' %}">Užsakymų sąrašas</a></li>
+                <li><a href="{% url 'post_auction' %}">Paskelbti užsakymą</a></li>
                 {% if user.is_authenticated %}
-                    <li><a href="{% url 'profile_view' user.username %}">Profile</a></li>
-                    <li class="header-right">Welcome, {{ user.username }}!</li>
-                    <li><a href="{% url 'account_logout' %}">Logout</a></li>
+                    <li class="header-right"><a href="{% url 'profile_view' user.username %}"><i class="fas fa-user"></i> Profilis</a></li>
+                    <li class="header-right">{{ user.username }}</li>
+                    <li class="header-right"><a href="{% url 'account_logout' %}">Atsijungti</a></li>
                 {% else %}
-                    <li class="header-right"><a href="{% url 'account_login' %}">Login</a></li>
-                    <li class="header-right"><a href="{% url 'account_signup' %}">Sign Up</a></li>
+                    <li class="header-right"><a href="{% url 'account_login' %}">Prisijungti</a></li>
+                    <li class="header-right"><a href="{% url 'account_signup' %}">Registruotis</a></li>
                 {% endif %}
             </ul>
             </nav>
