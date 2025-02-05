@@ -1,11 +1,11 @@
 {% extends "bidding/base.html" %}
 {% load static %}
 
-{% block title %}Lėšų Rinkimo Akcija{% endblock %}
+{% block title %}Lėšų rinkimo akcija{% endblock %}
 
 {% block content %}
 <div class="container">
-    <h1>Lėšų Rinkimo Akcija</h1>
+    <h1>Lėšų rinkimo akcija</h1>
     <p>Prisidėkite prie mūsų lėšų rinkimo akcijos, skirtos remti mūsų veiklą ir projektus. Jūsų parama yra labai svarbi!</p>
     <p>Norėdami paaukoti, galite pasirinkti vieną iš šių būdų:</p>
 
@@ -22,11 +22,5 @@
         <strong>Paskirtis:</strong> Parama<br>
         Šis numeris yra susietas su aukščiau nurodyta banko sąskaita.
     </p>
-
-    {% if user.is_authenticated %}
-        <a href="{% url 'profile_view' user.username %}" class="btn btn-primary">Mano Profilis</a>
-    {% else %}
-        <a href="{% url 'account_login' %}" class="btn btn-primary">Prisijungti</a>
-    {% endif %}
 </div>
 {% endblock %}
