@@ -7,7 +7,7 @@
 <div class="auction-list">
     {% for auction in auctions %}
         <div class="card auction-item">
-            <img src="{{ auction.image.url }}" class="card-img-top" alt="{{ auction.title }}">
+            <img src="{{ auction.images.first.image.url }}" class="card-img-top" alt="{{ auction.title }}">
             <div class="card-body">
                 <h5 class="card-title">{{ auction.title }}</h5>
                 <p class="card-text">Esamas Bid: {{ auction.current_bid }}</p>
@@ -16,7 +16,9 @@
         </div>
     {% endfor %}
 </div>
+{% endblock %}
 
+{% block extrastyle %}
 <style>
     .auction-list {
         display: grid;
