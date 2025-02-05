@@ -136,8 +136,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'jobvital@googlemail.com'  # Your Gmail address
-EMAIL_HOST_PASSWORD = 'v3i3 vesu hmyb anp5 bux5 ured 2luh jfyk'  # Use the generated App Password
 
 # Logging configuration
 LOGGING = {
