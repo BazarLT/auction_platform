@@ -1,134 +1,15 @@
-<!DOCTYPE html>
-<html lang="lt">
-<head>
-    <meta charset="UTF-8">
-    <title>Pagrindinis</title>
-    {% load static %}
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f0f0;
-        }
-        nav {
-            display: flex;
-            justify-content: space-around;
-            background-color: #1a73e8;
-            padding: 10px;
-            margin-bottom: 20px;
-        }
-        nav a {
-            text-decoration: none;
-            color: white;
-            font-weight: bold;
-        }
-        nav a i {
-            margin-right: 8px;
-        }
-        .jumbotron {
-            background: #007bff;
-            color: white;
-            padding: 50px 20px;
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        .featured-auctions {
-            margin-top: 40px;
-            text-align: center;
-        }
-        .auction-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            padding: 20px;
-        }
-        .auction-item {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        .auction-item img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 4px;
-        }
-        .auction-item h5 {
-            margin-top: 10px;
-            font-size: 1.2rem;
-        }
-        .auction-item p {
-            margin-top: 10px;
-            color: #888;
-        }
-        .btn-primary {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            margin-top: 10px;
-        }
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-        .info-section {
-            background-color: #ffffff;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .info-section h3 {
-            color: #333333;
-        }
-        .info-section p {
-            color: #666666;
-        }
-        .info-section ul {
-            list-style: none;
-            padding: 0;
-        }
-        .info-section ul li {
-            margin-bottom: 10px;
-        }
-        .btn-donation {
-            padding: 10px 20px;
-            background-color: #28a745;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            display: inline-block;
-            margin-top: 20px;
-        }
-        .btn-donation:hover {
-            background-color: #218838;
-        }
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-</head>
-<body>
-    <nav>
-        <a href="{% url 'home' %}"><i class="fas fa-home"></i> Pagrindinis</a>
-        <a href="{% url 'post_auction' %}">Paskelbti Užsakymą</a>
-        <a href="{% url 'auction_list' %}"><i class="fas fa-dollar-sign"></i> Užsakymų Sąrašas</a>
-        {% if user.is_authenticated %}
-            <a href="{% url 'profile_view' user.username %}"><i class="fas fa-user"></i> Profilis</a>
-        {% else %}
-            <a href="{% url 'login' %}">Prisijungti</a>
-            <a href="{% url 'register' %}">Registruotis</a>
-        {% endif %}
-    </nav>
-    
+{% extends "bidding/base.html" %}
+{% load static %}
+
+{% block title %}Pagrindinis{% endblock %}
+
+{% block content %}
     <div class="jumbotron">
         <h1>Sveiki atvykę į Aukciono Platformą</h1>
         <p>Prisijunkite ir pradėkite dalyvauti aukcionuose!</p>
         <a href="{% url 'donation_page' %}" class="btn-donation">Lėšų Rinkimo Akcija</a>
     </div>
-    
+
     <div class="info-section">
         <h3>Patikimas būdas samdyti meistrą:</h3>
         <ul>
@@ -137,7 +18,7 @@
             <li><strong>Pasirinkite geriausią pasiūlymą</strong> - rinkitės iš pasiūlymų su geriausiu kainos ir kokybės santykiu ir patvirtinkite užsakymą bei išlaidas.</li>
         </ul>
     </div>
-    
+
     <div class="featured-auctions">
         <h3>Rekomenduojami Aukcionai</h3>
         <div class="auction-list">
@@ -151,5 +32,4 @@
             {% endfor %}
         </div>
     </div>
-</body>
-</html>
+{% endblock %}

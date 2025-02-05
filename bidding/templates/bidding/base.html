@@ -23,49 +23,6 @@
     <link rel="stylesheet" href="{% static 'styles.css' %}">
     {% block stylesheet %}{% endblock %}
     {% block extrastyle %}
-    <style>
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #333;
-            padding: 10px 20px;
-        }
-        nav ul {
-            display: flex;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        nav ul li {
-            margin-left: 20px;
-        }
-        nav ul li a {
-            color: #000000 !important;
-            text-decoration: none;
-        }
-        nav ul li a:hover {
-            color: #333333 !important;
-        }
-        .header-right {
-            display: flex;
-            align-items: center;
-        }
-        .header-right li {
-            margin-left: 10px;
-        }
-        .btn {
-            color: white;
-            background-color: #007bff;
-            padding: 5px 10px;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        .btn:hover {
-            background-color: #0056b3;
-        }
-    </style>
     {% endblock %}
     {% if LANGUAGE_BIDI %}
         <link rel="stylesheet" href="{% static 'admin/css/rtl.css' %}">
@@ -97,22 +54,22 @@
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'profile_view' user.username %}">Profile</a></li>
                     <li class="header-right">Welcome, {{ user.username }}!</li>
-                    <li><a href="{% url 'account_logout' %}" class="btn">Logout</a></li>
+                    <li><a href="{% url 'account_logout' %}">Logout</a></li>
                 {% else %}
-                    <li class="header-right"><a href="{% url 'account_login' %}" class="btn">Login</a></li>
-                    <li class="header-right"><a href="{% url 'account_signup' %}" class="btn">Sign Up</a></li>
+                    <li class="header-right"><a href="{% url 'account_login' %}">Login</a></li>
+                    <li class="header-right"><a href="{% url 'account_signup' %}">Sign Up</a></li>
                 {% endif %}
             </ul>
-        </nav>
+            </nav>
       </header>
     {% endblock %}
     {% endif %}
 
-    {% block content %}
     <main id="content-start" role="main" class="container">
+        {% block content %}
         {% block main_content %}{% endblock %}
+        {% endblock %}
     </main>
-    {% endblock %}
 </div>
 </body>
 </html>
