@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'django_extensions',
+    # 'django_extensions',
 
     # Project apps
     'bidding',

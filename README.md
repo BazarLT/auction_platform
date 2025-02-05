@@ -30,8 +30,8 @@ Welcome to the Auction Platform project! This is a web-based application that al
 2. Create a virtual environment and activate it:
 
     ```sh
-    python -m venv venv
-    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+    python -m venv .venv
+    source .venv/bin/activate  # On Windows, use `.venv\Scripts\activate`
     ```
 
 3. Install the required dependencies:
