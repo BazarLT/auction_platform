@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Place Bid for {{ auction.title }}</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
-</head>
-<body>
+{% extends "bidding/base.html" %}
+{% load static %}
+
+{% block title %}Place Bid for {{ auction.title }}{% endblock %}
+
+{% block content %}
     <div class="container">
         <h1>Place Bid for {{ auction.title }}</h1>
         <p>{{ auction.description }}</p>
@@ -29,5 +26,4 @@
             <button type="submit">Place Bid</button>
         </form>
     </div>
-</body>
-</html>
+{% endblock %}
