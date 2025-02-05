@@ -66,6 +66,13 @@
     {% endif %}
 
     <main id="content-start" role="main" class="container">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
         {% block content %}
         {% block main_content %}{% endblock %}
         {% endblock %}

@@ -31,14 +31,7 @@
 
 {% block content %}
 <div class="edit-container">
-    <h2>Edit Auction</h2>
-    {% if messages %}
-        <div class="messages">
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-            {% endfor %}
-        </div>
-    {% endif %}
+    <h2>Redaguoti aukcioną</h2>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
