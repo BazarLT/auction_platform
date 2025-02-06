@@ -1,0 +1,1 @@
+web: waitress-serve --port=$PORT auction_platform.wsgi:application
