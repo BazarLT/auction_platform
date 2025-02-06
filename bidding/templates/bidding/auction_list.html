@@ -1,4 +1,5 @@
 {% extends "bidding/base.html" %}
+{% load static %}
 
 {% block title %}Užsakymų Sąrašas{% endblock %}
 
@@ -7,11 +8,15 @@
 <div class="auction-list">
     {% for auction in auctions %}
         <div class="card auction-item">
-            <img src="{{ auction.images.first.image.url }}" class="card-img-top" alt="{{ auction.title }}">
+            {% if auction.image %}
+                <img src="{{ auction.images.first.image.url }}" alt="{{ auction.title }}">
+            {% else %}
+                <img src="{% static 'default_image.jpg' %}" alt="No Image Available">
+            {% endif %}
             <div class="card-body">
                 <h5 class="card-title">{{ auction.title }}</h5>
-                <p class="card-text">Esamas Bid: {{ auction.current_bid }}</p>
-                <a href="{% url 'auction_details' auction.id %}" class="btn btn-primary">Peržiūrėti Užsakymą</a>
+                <p class="card-text">{{ auction.description }}</p>
+                <a href="{% url 'auction_details' auction.id %}" class="btn btn-primary">View Details</a> <!-- Updated URL name -->
             </div>
         </div>
     {% endfor %}
