@@ -1,1 +1,1 @@
-web: waitress-serve --port=$PORT auction_platform.wsgi:application
+web: gunicorn --config gunicorn.conf.py gettingstarted.wsgi

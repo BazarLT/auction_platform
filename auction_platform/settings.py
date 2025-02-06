@@ -35,7 +35,7 @@ if IS_HEROKU_APP:
     #
     # For maximum security, consider enabling HTTP Strict Transport Security (HSTS) headers too:
     # https://docs.djangoproject.com/en/5.1/ref/middleware/#http-strict-transport-security
-    # SECURE_SSL_REDIRECT = True
+    SECURE_SSL_REDIRECT = True
 
     # https://forum.djangoproject.com/t/improving-herokus-suggestions-for-django/26135/2
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
