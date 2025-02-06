@@ -48,8 +48,8 @@
 <div class="auction-container">
     <h1>{{ auction.title }}</h1>
     <p>{{ auction.description }}</p>
-    <p>Pradinė kaina: ${{ auction.starting_bid }}</p>
-    <p>Dabartinė kaina: ${{ auction.current_bid }}</p>
+    <p>Pradinė kaina: {{ auction.starting_bid }}</p>
+    <p>Dabartinė kaina: {{ auction.current_bid }}</p>
     <p>Pabaigos data: {{ auction.end_date }}</p>
     <h3>Nuotraukos:</h3>
     <div class="auction-images">

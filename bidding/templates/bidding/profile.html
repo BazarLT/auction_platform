@@ -150,7 +150,7 @@
             {% for bid in bids %}
                 <li class="item">
                     <div class="item-details">
-                        Statymas dėl <strong>{{ bid.auction.title }}</strong> - {{ bid.bid_amount }} ({{ bid.role }})
+                        Statymas ant <strong><a href="{% url 'auction_details' bid.auction.id %}">{{ bid.auction.title }}</a></strong> - {{ bid.bid_amount }}
                     </div>
                 </li>
             {% empty %}
