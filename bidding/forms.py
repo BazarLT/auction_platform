@@ -25,8 +25,8 @@ class AuctionForm(forms.ModelForm):
         self.fields['starting_bid'].label = "Pradinė kaina"
         self.fields['price'].label = "Kaina"
         self.fields['end_date'].label = "Pabaigos data"
-        for field in self.fields.values():
-            field.widget.attrs.update({'class': 'form-control'})
+        # for field in self.fields.values():
+        #     field.widget.attrs.update({'class': 'form-control'})
 
 class AuctionImageForm(forms.ModelForm):
     class Meta:
@@ -113,6 +113,7 @@ class UserRegistrationForm(forms.ModelForm):
 
 class ServiceRequestForm(forms.ModelForm):
     SERVICE_TYPE_CHOICES = [
+        ('', ''),
         ('mūrininkas', 'Mūrininkas'),
         ('elektrikas', 'Elektrikas'),
         ('darbininkas', 'Darbininkas'),

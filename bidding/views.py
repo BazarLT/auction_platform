@@ -226,6 +226,15 @@ def post_auction(request):
 
     else:
         service_form = ServiceRequestForm()
+        user = request.user
+        user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+        # Copy from profile.
+        # Note: these are saved to ServiceRequest, not Auction
+        service_form.initial['name'] = f"{user.first_name} {user.last_name}"
+        service_form.initial['phone'] = user_profile.phone_number
+        service_form.initial['email'] = user_profile.email
+        service_form.initial['address'] = user_profile.location
+
         formset = AuctionImageFormSet()
 
     return render(request, 'bidding/order_post.html', {
@@ -288,6 +297,7 @@ def delete_auction(request, auction_id):
 
     if request.method == 'POST':
         auction.delete()
+        messages.success(request, 'Auction deleted.')
         return redirect('profile_view', username=request.user.username)
     return render(request, 'bidding/delete_auction.html', {'auction': auction})
 
