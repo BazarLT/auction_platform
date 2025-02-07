@@ -77,7 +77,7 @@ LOGOUT_REDIRECT_URL = '/'
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
-ACCOUNT_SIGNUP_FORM_CLASS = 'bidding.allauth_forms.SignUpForm'
+ACCOUNT_SIGNUP_FORM_CLASS = 'bidding.forms.SignUpForm'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

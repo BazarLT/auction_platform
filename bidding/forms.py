@@ -142,3 +142,17 @@ class ServiceRequestForm(forms.ModelForm):
         self.fields['address'].label = "Adresas"
         for field in self.fields.values():
             field.widget.attrs.update({'class': 'form-control'})
+
+
+# https://docs.allauth.org/en/dev/account/configuration.html
+# ACCOUNT_SIGNUP_FORM_CLASS
+# used during signup to ask the user for additional input
+class SignUpForm(forms.Form):
+    first_name = forms.CharField(max_length=30, required=True)
+    last_name = forms.CharField(max_length=30, required=True)
+
+    def signup(self, request, user):
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
+        user.save()
+        return user
