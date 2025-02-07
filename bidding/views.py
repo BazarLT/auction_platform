@@ -10,7 +10,6 @@ from django.core.mail import send_mail
 from .models import Auction, ServiceRequest, UserProfile, UserProfileImage, AuctionImage, Bid, Watchlist, Message, Notification
 from .forms import ServiceRequestForm, BidForm, UserRegistrationForm, UserProfileForm, UserProfileImageFormSet, AuctionForm, AuctionImageFormSet, MessageForm
 from .utils import send_outbid_notification, send_payment_confirmation, process_fee_payment, send_confirmation_notification
-import smtplib
 
 def register(request):
     if request.method == 'POST':
@@ -219,16 +218,7 @@ def post_auction(request):
             auction.save()
             formset.instance = auction
             formset.save()
-            try:
-                send_mail(
-                    'New Service Request',
-                    'A new service request has been submitted.',
-                    'from@example.com',
-                    ['to@example.com'],
-                    fail_silently=False,
-                )
-            except smtplib.SMTPAuthenticationError:
-                pass
+            messages.success(request, 'A new auction was posted')
             return redirect('auction_post_success')
         else:
             errors = service_form.errors
