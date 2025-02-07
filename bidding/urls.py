@@ -22,7 +22,6 @@ urlpatterns = [
     path('watchlist/remove/<int:auction_id>/', views.remove_from_watchlist, name='remove_from_watchlist'),
     path('messages/send/<int:receiver_id>/', views.send_message, name='send_message'),
     path('messages/', views.view_messages, name='view_messages'),
-    path('auction_post_success/', views.auction_post_success, name='auction_post_success'),  # Ensure this line is included
     path('donation/', views.donation_page, name='donation_page'),  # Added donation_page path
     path('auction/<int:auction_id>/start_chat/', views.start_chat, name='start_chat'),  # Added start_chat path
     path('notifications/', views.view_notifications, name='view_notifications'),  # Added notifications path

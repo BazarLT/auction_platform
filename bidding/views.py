@@ -219,7 +219,8 @@ def post_auction(request):
             formset.instance = auction
             formset.save()
             messages.success(request, 'A new auction was posted')
-            return redirect('auction_post_success')
+            auction.refresh_from_db()
+            return redirect('auction_details', auction_id=auction.id)
         else:
             errors = service_form.errors
 
@@ -236,10 +237,6 @@ def post_auction(request):
         'form_button': 'Submit',
         'errors': errors,
     })
-
-@login_required
-def auction_post_success(request):
-    return render(request, 'bidding/auction_post_success.html')
 
 @login_required
 def edit_auction(request, auction_id):
