@@ -1,5 +1,6 @@
 Django>=5.1
 django-allauth==65.3.1
+dj_database_url
 Pillow>=11.1
 gunicorn>=23; sys_platform == "linux"
 waitress>=3.0; sys_platform == 'win32'
