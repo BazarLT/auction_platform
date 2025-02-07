@@ -80,7 +80,9 @@ class UserProfileModelTest(TestCase):
 class ServiceRequestModelTest(TestCase):
 
     def test_create_service_request(self):
+        user = User.objects.create(username="testuser")
         order = ServiceRequest.objects.create(
+            user=user,
             name="Test Order",
             description="This is a test order",
             address="Test Address",
