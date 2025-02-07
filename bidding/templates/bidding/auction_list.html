@@ -8,7 +8,7 @@
 <div class="auction-list">
     {% for auction in auctions %}
         <div class="card auction-item">
-            {% if auction.image %}
+            {% if auction.images.first %}
                 <img src="{{ auction.images.first.image.url }}" alt="{{ auction.title }}">
             {% else %}
                 <img src="{% static 'default_image.jpg' %}" alt="No Image Available">
