@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from django.contrib import messages
 from django.urls import reverse
@@ -79,7 +80,8 @@ def confirm_payment(request, auction_id):
 
 @login_required
 def profile_view(request, username):
-    user_profile, created = UserProfile.objects.get_or_create(user__username=username)
+    user = User.objects.get(username=username)
+    user_profile, created = UserProfile.objects.get_or_create(user=user)
     bids = Bid.objects.filter(bidder=user_profile)
     watchlist = Watchlist.objects.filter(user=user_profile)
     messages = Message.objects.filter(receiver=user_profile)
@@ -97,7 +99,8 @@ def profile_view(request, username):
 
 @login_required
 def edit_profile(request, username):
-    user_profile, created = UserProfile.objects.get_or_create(user__username=username)
+    user = User.objects.get(username=username)
+    user_profile, created = UserProfile.objects.get_or_create(user=user)
     if request.method == 'POST':
         form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
         formset = UserProfileImageFormSet(request.POST, request.FILES, instance=user_profile)
