@@ -79,7 +79,7 @@ def confirm_payment(request, auction_id):
 
 @login_required
 def profile_view(request, username):
-    user_profile = get_object_or_404(UserProfile, user__username=username)
+    user_profile, created = UserProfile.objects.get_or_create(user__username=username)
     bids = Bid.objects.filter(bidder=user_profile)
     watchlist = Watchlist.objects.filter(user=user_profile)
     messages = Message.objects.filter(receiver=user_profile)
@@ -97,7 +97,7 @@ def profile_view(request, username):
 
 @login_required
 def edit_profile(request, username):
-    user_profile = get_object_or_404(UserProfile, user__username=username)
+    user_profile, created = UserProfile.objects.get_or_create(user__username=username)
     if request.method == 'POST':
         form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
         formset = UserProfileImageFormSet(request.POST, request.FILES, instance=user_profile)
