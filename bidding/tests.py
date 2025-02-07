@@ -1,6 +1,6 @@
 import re
 from django.test import TestCase
-from .models import Auction, UserProfile, Order, AuctionImage
+from .models import Auction, UserProfile, ServiceRequest, AuctionImage
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils import timezone
@@ -77,15 +77,14 @@ class UserProfileModelTest(TestCase):
         profile = UserProfile.objects.create(user=user)
         self.assertEqual(profile.user.username, "testuser")
 
-class OrderModelTest(TestCase):
+class ServiceRequestModelTest(TestCase):
 
-    def test_create_order(self):
-        order = Order.objects.create(
+    def test_create_service_request(self):
+        order = ServiceRequest.objects.create(
             name="Test Order",
             description="This is a test order",
             address="Test Address",
-            price=100.0,
             created_at=timezone.now()
         )
         self.assertEqual(order.name, "Test Order")
-        self.assertEqual(order.price, 100.0)
+        self.assertEqual(order.address, "Test Address")
