@@ -1,10 +1,11 @@
 import re
 from django.test import TestCase
-from .models import Auction, UserProfile, ServiceRequest, AuctionImage
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils import timezone
 from django.core.files.uploadedfile import SimpleUploadedFile
+
+from .models import Auction, UserProfile, ServiceRequest, AuctionImage
 
 class AuctionModelTest(TestCase):
 
@@ -46,9 +47,18 @@ class AuctionViewsTest(TestCase):
         self.client.login(username='testuser', password='12345')
 
     def test_auction_list_view(self):
+        profile = UserProfile.objects.create(user=self.user)
+        auction = Auction.objects.create(
+            title="Test Auction",
+            description="This is a test auction",
+            starting_bid=100,
+            price=150,
+            end_date=timezone.now() + timezone.timedelta(days=7),
+            seller=profile
+        )
         response = self.client.get(reverse('auction_list'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Auction List")
+        self.assertContains(response, "Test Auction")
 
     def test_auction_details_view(self):
         profile = UserProfile.objects.create(user=self.user)
@@ -67,7 +77,7 @@ class AuctionViewsTest(TestCase):
         self.assertContains(response, "Test Auction")
 
         # Use regex to match the dynamic image URL
-        image_pattern = re.compile(r'<img src="/media/auction_images/test_image_\w+.jpg" alt="Test Auction Image">')
+        image_pattern = re.compile(r'<img src="/media/auction_images.test_image_\w+.jpg" alt="Test Auction Image">')
         self.assertRegex(response.content.decode(), image_pattern)
 
 class UserProfileModelTest(TestCase):

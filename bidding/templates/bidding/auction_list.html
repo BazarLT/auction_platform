@@ -10,8 +10,6 @@
         <div class="card auction-item">
             {% if auction.images.first %}
                 <img src="{{ auction.images.first.image.url }}" alt="{{ auction.title }}">
-            {% else %}
-                <img src="{% static 'default_image.jpg' %}" alt="No Image Available">
             {% endif %}
             <div class="card-body">
                 <h5 class="card-title">{{ auction.title }}</h5>

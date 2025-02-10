@@ -3,8 +3,8 @@ django-allauth==65.3.1
 django-binary-database-files==1.0.18
 dj_database_url
 Pillow>=11.1
-psycopg[binary,pool]
+psycopg[binary,pool]; sys_platform == 'linux'
 pyreadline3; sys_platform == 'win32'
-gunicorn>=23; sys_platform == "linux"
+gunicorn>=23; sys_platform == 'linux'
 waitress>=3.0; sys_platform == 'win32'
 whitenoise>=6.8.2
